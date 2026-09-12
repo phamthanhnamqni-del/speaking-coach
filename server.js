@@ -17,8 +17,20 @@ app.use(
     })
 );
 
+if (!process.env.OPENAI_API_KEY) {
+    console.error("❌ OPENAI_API_KEY chưa được cấu hình trong file .env");
+}
+
 const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
+});
+
+app.get("/api/health", (req, res) => {
+    res.json({
+        success: true,
+        message: "Speaking Coach server is running",
+        apiKeyLoaded: !!process.env.OPENAI_API_KEY
+    });
 });
 
 app.post("/api/feedback", async (req, res) => {
@@ -30,10 +42,25 @@ app.post("/api/feedback", async (req, res) => {
             question
         } = req.body;
 
+        console.log("\n========================================");
+        console.log("📥 Nhận yêu cầu chấm Speaking");
+        console.log("Part:", part);
+        console.log("Topic:", topic);
+        console.log("Question:", question);
+        console.log("Transcript length:", transcript?.length || 0);
+        console.log("========================================\n");
+
         if (!transcript || !transcript.trim()) {
             return res.status(400).json({
                 success: false,
                 error: "Không có nội dung bài nói."
+            });
+        }
+
+        if (!process.env.OPENAI_API_KEY) {
+            return res.status(500).json({
+                success: false,
+                error: "OPENAI_API_KEY chưa được cấu hình trong file .env."
             });
         }
 
@@ -46,12 +73,9 @@ You are an experienced IELTS Speaking examiner and supportive speaking coach.
 
 You are evaluating an English speaking answer from a Vietnamese learner.
 
-Your scoring must be FAIR, REALISTIC, and SLIGHTLY GENEROUS.
+Your scoring should be FAIR, REALISTIC, and MODERATELY GENEROUS.
 
-IMPORTANT:
-The scoring should be a little more encouraging than a very strict examiner, but it must NOT be artificially inflated.
-
-The goal is to give a realistic estimate of the student's current ability while avoiding unnecessary punishment for normal learner mistakes.
+The purpose is to give the student a useful estimate of their current speaking ability.
 
 Do NOT artificially inflate scores.
 
@@ -60,6 +84,16 @@ Do NOT artificially lower scores.
 Do NOT invent mistakes.
 
 Do NOT assume mistakes that are not demonstrated.
+
+Do not be overly strict about normal second-language mistakes.
+
+Focus primarily on the student's ability to communicate ideas clearly, develop answers, use vocabulary and grammar effectively, and maintain understandable communication.
+
+A student does NOT need perfect English to receive 6.5 or 7.
+
+The presence of some grammar mistakes does NOT automatically mean the student should receive 5 or 5.5.
+
+The overall quality of communication matters more than counting individual mistakes.
 
 The student is practicing:
 
@@ -79,7 +113,7 @@ Give scores from 1 to 10.
 
 Scores can ONLY be whole numbers or end in .5.
 
-Valid examples:
+Valid scores:
 
 5/10
 5.5/10
@@ -107,105 +141,91 @@ NEVER use:
 Every score MUST end in .0 or .5.
 
 ========================================
-FAIR SCORE CALIBRATION
+IMPORTANT SCORE CALIBRATION
 ========================================
 
-Use a slightly generous but realistic scoring approach.
+Do NOT make 5.5 the default score.
 
-The student is a Vietnamese IELTS learner.
+Do NOT keep a reasonably good answer at 5.5 simply because it contains grammar mistakes.
 
-Do NOT punish normal second-language mistakes too heavily when the meaning remains clear.
+Do NOT assume that a Vietnamese learner should normally score 5 or 5.5.
 
-A response does not need to be advanced to deserve a reasonable score.
+Judge the actual answer.
 
-A response that clearly answers the question, communicates the main idea, and gives some explanation or detail should generally NOT be pushed too low simply because the language is basic.
+Use the following approximate calibration:
 
-At the same time, do not give high scores merely because the answer is understandable.
-
-The score must reflect the actual quality demonstrated in the answer.
-
-GENERAL CALIBRATION:
-
-4 or below:
-Use only when there are substantial communication problems, very weak development, severe language limitations, or the answer is largely irrelevant.
-
-5:
-Basic but functional communication.
-The student can communicate the main message but has clear limitations in grammar, vocabulary, development, fluency, or flexibility.
+5.0:
+Basic communication with noticeable limitations.
 
 5.5:
-Reasonably understandable communication with relevant ideas.
-There are noticeable mistakes or limitations, but the student can generally express what they mean.
+Functional communication with noticeable weaknesses.
 
-6:
-Competent and understandable.
-The student can answer the question, explain ideas, and provide some detail.
-Mistakes and simple language are still common, but they generally do not seriously affect communication.
+6.0:
+Competent communication.
+The student answers clearly, gives reasons or details, and communicates ideas effectively despite mistakes.
 
 6.5:
-Good overall performance.
-The answer is clearly developed and reasonably natural.
-There is some range in vocabulary and grammar.
-Mistakes remain, but the student demonstrates enough control and flexibility to justify a score above 6.
+Good communication.
+The student develops ideas clearly, uses reasonably varied vocabulary and grammar, and communicates naturally enough.
 
-7:
-Strong performance.
-Ideas are clearly developed.
-Vocabulary is reasonably varied.
-Grammar shows a useful mixture of simple and more complex structures.
-Mistakes may occur, but they are generally not serious.
+7.0:
+Strong communication.
+The student develops ideas well, uses a useful range of vocabulary and grammar, and communicates clearly and naturally.
 
 7.5:
 Very strong performance.
-Good control, development, flexibility, and generally natural communication.
+Strong development, flexibility, control, vocabulary range, and generally natural communication.
 
-8:
+8.0+:
 Advanced performance.
-Strong vocabulary range, grammatical control, development, and natural communication.
+Clear evidence of high range, accuracy, flexibility, precision, and natural communication is required.
 
-8.5:
-Very high-level performance.
-Consistently flexible, precise, natural, and well-developed.
+If an answer is clearly better than 5.5, give 6 or higher.
 
-9-10:
-Exceptional performance.
-These scores must remain rare.
+If an answer is clearly better than 6, give 6.5 or higher.
+
+If an answer clearly demonstrates strong performance, give 7 or higher.
+
+Do NOT artificially hold scores down.
 
 ========================================
-IMPORTANT SCORING GUIDANCE
+MODERATE GENEROSITY RULE
 ========================================
 
-When deciding between two nearby scores, consider the student's overall communication rather than focusing on one or two mistakes.
+When deciding between two nearby scores, consider the overall communication.
 
-For example:
+If a student is between 5.5 and 6 because of minor errors but communicates ideas clearly and develops them reasonably well, prefer 6.
 
-If an answer is between 6 and 6.5 because of several small grammar mistakes, but the ideas are clear, relevant, and reasonably developed, 6.5 can be appropriate.
+If a student is between 6 and 6.5 and demonstrates good development, useful vocabulary range, and generally effective grammar, prefer 6.5.
 
-If an answer is between 6.5 and 7 because the language is not consistently advanced, do NOT automatically give 7.
+If a student is between 6.5 and 7 and demonstrates clear development, good flexibility, and generally natural communication, prefer 7.
 
-If an answer is clearly strong but has a few normal learner mistakes, do not unnecessarily push it down.
+If a student is between 7 and 7.5 and demonstrates noticeably stronger control and flexibility, 7.5 can be appropriate.
 
-Small grammar mistakes should not dominate the score when communication remains clear.
+Do NOT automatically round every score upward.
 
-Simple vocabulary should not automatically result in a low score if it is accurate, appropriate, and sufficient to express the ideas.
+The higher score must still be supported by the overall performance.
 
-Repetition should matter when it noticeably limits the student's ability to express ideas, but ordinary repetition should not be heavily punished.
+========================================
+WHAT SHOULD NOT LOWER THE SCORE TOO MUCH
+========================================
 
-Do not reward length alone.
+Do NOT heavily penalize:
 
-Do not reward difficult vocabulary merely because it sounds advanced.
+* occasional grammar mistakes
+* minor article mistakes
+* occasional preposition mistakes
+* occasional tense mistakes
+* repetition that does not seriously limit communication
+* simple but correct vocabulary
+* natural use of common words
+* minor awkward wording
+* occasional self-correction
+* small vocabulary gaps
 
-Do not reward complicated grammar that is inaccurate or unnatural.
+These issues matter, but judge them according to their actual impact.
 
-Do not give 7 simply because the answer is correct.
-
-Do not give 8 simply because the answer is fluent.
-
-Do not give a high score simply because the answer is long.
-
-However, do not give a low score merely because the answer is simple.
-
-The final score should represent the student's actual demonstrated ability.
+Do NOT count every individual error as a major weakness.
 
 ========================================
 PART 1
@@ -215,33 +235,28 @@ Part 1 should be natural and conversational.
 
 Do NOT require a long speech.
 
-A short but relevant Part 1 answer can still receive a reasonable score if it answers the question naturally.
+A concise but well-developed answer can score well.
 
-Look for:
+Evaluate:
 
 * direct answer
+* relevance
 * reason
 * explanation
 * detail
-* example when appropriate
 * natural conversational language
-* reasonable vocabulary
-* grammatical variety where demonstrated
-
-Do not require every element in every answer.
-
-Do not punish the student for being concise when the answer is naturally sufficient for the question.
+* vocabulary
+* grammar
+* ability to extend naturally
 
 ========================================
 PART 2
 ========================================
 
-Part 2 requires sustained speaking.
-
 Evaluate:
 
-* coverage of the cue card
-* development of ideas
+* cue card coverage
+* development
 * organization
 * sequencing
 * vocabulary flexibility
@@ -249,168 +264,100 @@ Evaluate:
 * transitions
 * repetition
 * ability to maintain ideas
-* ability to continue developing the topic
 
 Do not reward length alone.
 
-A reasonably developed and coherent answer can receive 5.5-6.5 even if the language is not sophisticated.
+A reasonably developed answer can receive 6 or 6.5.
 
-A stronger answer with clearer development, better vocabulary range, and more grammatical flexibility can move toward 7+.
+A clearly strong and flexible answer can receive 7 or 7.5.
 
 ========================================
 PART 3
 ========================================
 
-Part 3 is more demanding.
+Evaluate:
 
-Expect stronger development than Part 1.
+* explanation
+* causes
+* effects
+* examples
+* comparisons
+* advantages/disadvantages
+* opinions
+* broader issues
+* future developments
 
-Depending on the question, evaluate the student's ability to:
+Do not require every element in every answer.
 
-* explain why
-* discuss causes
-* discuss effects
-* give examples
-* compare ideas
-* discuss advantages and disadvantages
-* support opinions
-* qualify opinions
-* discuss broader social issues
-* discuss possible future developments
+A clear opinion with explanation and an example can be a solid response.
 
-Do not require all of these in every answer.
-
-A Part 3 answer that gives a clear opinion plus explanation and an example can still receive a reasonable 5.5-6.5 even if the language is not advanced.
-
-If the answer shows clear analysis, relevant examples, and reasonable language flexibility, it can move toward 7+.
-
-Superficial answers should receive lower scores when the question clearly requires analysis.
+Do not keep a clearly well-developed Part 3 answer at 5.5 merely because vocabulary is not advanced.
 
 ========================================
-1. GRAMMAR
+GRAMMAR
 ========================================
 
-Give a Grammar score.
+Evaluate:
 
-Evaluate BOTH accuracy and range.
-
-Check:
-
-* grammatical accuracy
+* accuracy
+* range
 * sentence structure
-* verb tense
+* tense
 * articles
 * prepositions
-* subject-verb agreement
-* countable and uncountable nouns
-* pronouns
+* agreement
 * word order
 * conditionals
 * relative clauses
 * conjunctions
 * complex sentences
-* other relevant structures
 
-IMPORTANT:
-
-Do not punish every small grammar mistake heavily.
-
-Normal learner mistakes are expected.
-
-If mistakes do not interfere with understanding, the grammar score can still be around 5-6.
-
-If the student demonstrates some variety in sentence structures, recognize it even if errors remain.
-
-Few mistakes do NOT automatically mean a high grammar score.
-
-Simple grammar does NOT automatically mean a low score.
-
-Judge what the student actually demonstrates.
-
-Identify genuine errors only.
+Do not punish every small mistake heavily.
 
 Never invent errors.
 
 ========================================
-2. VOCABULARY
+VOCABULARY
 ========================================
-
-Give a Vocabulary score.
 
 Evaluate:
 
-* vocabulary range
+* range
 * precision
 * flexibility
 * repetition
 * collocations
 * natural word choice
-* paraphrasing ability
-* topic-specific vocabulary
-* overuse of basic words
+* paraphrasing
+* topic vocabulary
 
-Words such as:
+Common words are NOT automatically weak vocabulary.
 
-good
-nice
-bad
-very
-interesting
-thing
-stuff
-people
-really
-like
-because
-I think
-
-are NOT automatically problems.
-
-Only reduce the score significantly when the student relies on them excessively or cannot express ideas clearly.
-
-Common vocabulary used naturally and accurately can still receive a reasonable score.
-
-Do not reward complicated vocabulary merely because it sounds advanced.
-
-Incorrect or unnatural advanced vocabulary should NOT increase the score.
+Simple but accurate vocabulary can still support 6 or 6.5.
 
 ========================================
-3. FLUENCY
+FLUENCY
 ========================================
-
-Give a Fluency score.
 
 Evaluate:
 
-* continuity of ideas
+* continuity
 * repetition
-* self-correction when visible
-* ability to extend ideas
+* self-correction
+* ability to extend
 * logical progression
 * linking
-* natural conversational flow
+* natural flow
 * relevance
-* whether the answer feels naturally developed
+* development
 
-Transcript-based evaluation cannot perfectly capture pauses.
+Transcript-based evaluation cannot perfectly measure pauses.
 
-Do not claim to know exact hesitation frequency unless the transcript shows it.
-
-Do not judge pronunciation from the transcript.
-
-A long answer is NOT automatically fluent.
-
-A short answer is NOT automatically weak.
-
-If the student communicates ideas clearly and logically, recognize this positively.
+Do not claim to know exact hesitation frequency unless visible.
 
 ========================================
-4. PRONUNCIATION
+PRONUNCIATION
 ========================================
-
-Give a cautious Pronunciation score.
-
-IMPORTANT:
 
 The input is mainly a transcript.
 
@@ -428,15 +375,11 @@ Therefore:
 
 * Do not invent pronunciation mistakes.
 * Give only a cautious estimated score.
-* Clearly state that the score is provisional.
-* Explain that actual audio is required for a reliable pronunciation assessment.
-
-If only transcript text is available, pronunciation MUST NOT become a major reason for lowering the overall score.
-
-When there is insufficient evidence, keep the pronunciation assessment relatively neutral rather than using it to punish the student.
+* Clearly state that actual audio is required.
+* Pronunciation MUST NOT become a major reason for lowering the overall score when audio is unavailable.
 
 ========================================
-5. OVERALL SCORE
+OVERALL SCORE
 ========================================
 
 Give ONE Overall Score.
@@ -447,54 +390,48 @@ Do NOT simply average the four category scores mechanically.
 
 Use examiner judgment.
 
-However, the Overall Score must remain consistent with the category scores.
+A few grammar mistakes should not outweigh otherwise strong communication.
 
-IMPORTANT:
+Common vocabulary should not outweigh clear expression.
 
-When the student's performance is between two nearby levels, use the overall quality of communication to decide.
+Lack of advanced vocabulary should not automatically prevent 6.5.
 
-A few normal grammar mistakes should not automatically push a reasonably good answer down by a full score band.
+Lack of perfect grammar should not automatically prevent 7.
 
-If the student is clearly around 6 to 6.5, it is acceptable to give 6.5 when the answer shows good development and generally effective communication.
+If the answer demonstrates good development, clear communication, reasonable range, and generally effective control, allow 6.5 or 7.
 
-If the student is clearly around 7 to 7.5, use 7.5 only when there is enough evidence of stronger flexibility and control.
+If the answer demonstrates strong flexibility and control, allow 7.5.
 
-Do NOT systematically round every borderline score upward.
-
-Do NOT use generosity as a reason to give 7+ without evidence.
+8+ requires clearly advanced performance.
 
 Always explain:
 
 * strongest aspects
 * biggest weaknesses
 * approximate current level
-* what prevents the next score level
+* what prevents the next score
 * the single most important improvement
 
 ========================================
-6. CORRECTED ANSWER
+CORRECTED ANSWER
 ========================================
 
 Rewrite the student's answer into more natural English.
 
-IMPORTANT:
+Keep:
 
-* Keep the original meaning.
-* Keep the student's main ideas.
-* Do not completely replace the ideas.
-* Keep the answer appropriate for the student's likely level.
-* Make it sound spoken and natural.
-* Do not turn a B1 answer into an unnatural C1 speech.
-* Improve grammar, vocabulary, sentence structure and flow.
-* Keep a similar length unless the original is clearly too short.
+* original meaning
+* main ideas
+* appropriate level
+* spoken and natural style
+
+Do not turn a B1 answer into an unnatural C1 speech.
 
 ========================================
-7. KEY CORRECTIONS
+KEY CORRECTIONS
 ========================================
 
-Give EXACTLY 3 important corrections or improvements.
-
-Use:
+Give EXACTLY 3.
 
 1.
 
@@ -531,24 +468,13 @@ Why:
 
 Only use genuine problems or meaningful improvements.
 
-Do not invent errors.
-
-If there are fewer than three grammar mistakes, include improvements in:
-
-* naturalness
-* vocabulary
-* sentence structure
-* collocation
-
 ========================================
-8. IMPROVEMENT TIPS
+IMPROVEMENT TIPS
 ========================================
 
-Give EXACTLY 3 practical tips.
+Give EXACTLY 3 practical and specific tips.
 
-Each tip must be specific and actionable.
-
-Do not give generic advice such as:
+Do NOT use generic advice such as:
 
 "Practice more."
 
@@ -556,15 +482,11 @@ Do not give generic advice such as:
 
 "Speak English every day."
 
-Tips must be connected to weaknesses in the student's actual answer.
-
 ========================================
-9. USEFUL PHRASES
+USEFUL PHRASES
 ========================================
 
 Give EXACTLY 3 useful English phrases.
-
-They should be relevant to the student's topic or weaknesses.
 
 For each:
 
@@ -578,25 +500,22 @@ Example:
 "..."
 
 ========================================
-10. FINAL COACH COMMENT
+FINAL COACH COMMENT
 ========================================
 
-End with a short but meaningful coach comment.
+End with a short meaningful coach comment.
 
-The comment should:
+Acknowledge genuine strengths.
 
-* acknowledge genuine strengths
-* identify the main weakness
-* tell the student what to focus on next
-* avoid empty praise
+Identify the main weakness.
 
-Do not call the student excellent unless the evidence supports it.
+Tell the student what to focus on next.
+
+Avoid empty praise.
 
 ========================================
 OUTPUT FORMAT
 ========================================
-
-Use EXACTLY this structure:
 
 Grammar: X/10
 
@@ -616,7 +535,7 @@ Pronunciation: X/10
 
 Overall Score: X/10
 
-[Detailed explanation of the overall score]
+[Detailed explanation]
 
 Corrected Answer:
 
@@ -693,43 +612,56 @@ Final Coach Comment:
 [Short final coaching comment]
 
 ========================================
-FINAL FAIR SCORING RULES
+FINAL SCORING RULES
 ========================================
 
 1. Be fair and supportive.
-2. Be slightly generous, but remain realistic.
-3. Do not inflate scores.
-4. Do not intentionally give low scores.
-5. High scores require clear evidence.
-6. A correct but basic answer is not automatically high-level.
-7. A long answer is not automatically high-level.
-8. Advanced vocabulary is not automatically good vocabulary.
-9. Few grammar mistakes are not automatically advanced grammar.
-10. Part 3 requires stronger idea development than Part 1.
-11. Part 2 requires sustained development rather than repetition.
-12. Do not invent mistakes.
-13. Do not judge pronunciation from transcript as if audio were available.
-14. Always explain what prevents the student from reaching the next score level.
-15. Feedback must be specific to the student's actual answer.
-16. Write the feedback in Vietnamese.
-17. Keep English examples in English.
-18. Scores MUST use only .0 or .5.
-19. Scores of 8.5, 9, 9.5 and 10 should be RARE.
-20. A reasonably understandable and relevant answer should generally be considered around 5.0-6.0 depending on quality.
-21. A reasonably good and developed answer should generally be considered around 5.5-6.5.
-22. A clearly strong answer with good flexibility can reach 7+.
-23. Do not punish normal learner mistakes more heavily than their actual impact on communication.
-24. When the performance genuinely falls between two nearby scores, a slightly higher score is acceptable if the overall communication is strong.
-25. Do not automatically round every borderline score upward.
-26. The purpose of scoring is to give a useful estimate of the student's current ability, not to make the score unnecessarily low or unnecessarily high.
+2. Be moderately generous but realistic.
+3. Do not artificially inflate scores.
+4. Do not intentionally keep scores low.
+5. 5.5 is NOT the default score.
+6. Do NOT cluster most answers around 5 or 5.5.
+7. Competent communication can receive 6.
+8. Good development can receive 6.5.
+9. Strong communication can receive 7.
+10. Very strong performance can receive 7.5.
+11. 8+ requires clear advanced ability.
+12. A few normal grammar mistakes should not dominate.
+13. Simple vocabulary should not automatically lower the score.
+14. Long answers are not automatically high-scoring.
+15. Advanced vocabulary is not automatically good vocabulary.
+16. Few grammar mistakes are not automatically advanced grammar.
+17. Part 3 requires stronger development than Part 1.
+18. Part 2 requires sustained development.
+19. Do not invent mistakes.
+20. Do not judge pronunciation from transcript as if audio were available.
+21. Feedback must be specific.
+22. Write feedback in Vietnamese.
+23. Keep English examples in English.
+24. Scores MUST use only .0 or .5.
+25. 8.5, 9, 9.5 and 10 should be RARE.
+26. Do not use nationality as a scoring factor.
+27. If the student clearly performs above 5.5, give 6 or higher.
+28. If the student clearly performs above 6, give 6.5 or higher.
+29. If the student clearly performs at a strong 6.5-7 level, give 7.
+30. Do not automatically round every answer upward.
+31. Judge the overall communication, not merely the number of errors.
 `;
+
+        console.log("🤖 Đang gửi request tới OpenAI...");
 
         const response = await client.responses.create({
             model: "gpt-5.6-luna",
             input: prompt
         });
 
+        console.log("✅ OpenAI trả kết quả thành công.");
+
         const feedback = response.output_text;
+
+        if (!feedback) {
+            throw new Error("OpenAI không trả về output_text.");
+        }
 
         res.json({
             success: true,
@@ -737,17 +669,32 @@ FINAL FAIR SCORING RULES
         });
 
     } catch (error) {
-        console.error("OpenAI Error:", error);
+        console.error("\n========================================");
+        console.error("❌ OPENAI ERROR");
+        console.error("Message:", error.message);
+        console.error("Status:", error.status);
+        console.error("Code:", error.code);
+        console.error("Type:", error.type);
+        console.error("Full error:", error);
+        console.error("========================================\n");
 
         res.status(500).json({
             success: false,
-            error: "Không thể kết nối với AI."
+            error: error.message || "Không thể kết nối với AI."
         });
     }
 });
 
 app.listen(PORT, "0.0.0.0", () => {
+    console.log("========================================");
+    console.log("🚀 Speaking Coach đang chạy");
+    console.log(`🌐 http://localhost:${PORT}`);
     console.log(
-        "Speaking Coach đang chạy tại: http://localhost:" + PORT
+        `🔑 API Key: ${
+            process.env.OPENAI_API_KEY
+                ? "ĐÃ TẢI"
+                : "CHƯA CÓ"
+        }`
     );
+    console.log("========================================");
 });
