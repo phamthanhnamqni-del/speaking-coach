@@ -1,532 +1,529 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AI Speaking Coach</title>
+    <title>IELTS Speaking Coach</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="app">
+<div class="app">
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-            <div class="logo">
-                <div class="logo-icon">🎙️</div>
-                <span>Speaking Coach</span>
+        <div class="logo">
+            🎤 <span>Speaking Coach</span>
+        </div>
+
+        <div class="menu">
+            <button class="menu-item active">
+                🗣️ Speaking
+            </button>
+
+            <button class="menu-item">
+                📚 Vocabulary
+            </button>
+
+            <button class="menu-item">
+                📝 Grammar
+            </button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <div class="header">
+            <div>
+                <h1>IELTS Speaking Coach</h1>
+                <p>Practice speaking and get detailed AI feedback.</p>
+            </div>
+        </div>
+
+
+        <!-- TOPIC -->
+        <section class="topic-card">
+
+            <div class="topic-label">
+                IELTS SPEAKING
             </div>
 
-            <nav>
-                <a class="active">🏠 <span>Practice</span></a>
-                <a>📊 <span>Progress</span></a>
-                <a>📚 <span>Vocabulary</span></a>
-                <a>⚙️ <span>Settings</span></a>
-            </nav>
+            <h2>Describe something you enjoy doing in your free time.</h2>
 
-            <div class="sidebar-bottom">
+            <p>
+                You should say what it is, when you do it,
+                who you usually do it with, and explain why you enjoy it.
+            </p>
 
-                <div class="streak">
-                    <span>🔥</span>
-
-                    <div>
-                        <strong>7 days</strong>
-                        <small>Speaking streak</small>
-                    </div>
-                </div>
-
-            </div>
-
-        </aside>
+        </section>
 
 
-        <!-- Main -->
-        <main class="main">
+        <!-- SPEAKING -->
+        <section class="speaking-card">
 
-            <!-- Header -->
-            <header class="topbar">
+            <div class="speaking-header">
 
                 <div>
-
-                    <p class="welcome">
-                        Good morning 👋
-                    </p>
-
-                    <h1>
-                        Let's practice speaking.
-                    </h1>
-
+                    <h2>Your Answer</h2>
+                    <p>Press the microphone and start speaking in English.</p>
                 </div>
 
-
-                <div class="level">
-
-                    <span>
-                        English Level
-                    </span>
-
-                    <strong>
-                        B1 Intermediate
-                    </strong>
-
+                <div id="recordingStatus" class="status">
+                    Ready
                 </div>
 
-            </header>
+            </div>
 
 
-            <!-- Topic -->
-            <section class="topic-card">
+            <!-- TRANSCRIPT -->
+            <div class="transcript-box">
 
-                <div class="topic-info">
-
-                    <span class="tag">
-                        TODAY'S TOPIC
-                    </span>
-
-                    <h2>
-                        Talk about your daily routine
-                    </h2>
-
-                    <p>
-                        Tell me about what you usually do during a normal day.
-                        Try to speak for at least 30 seconds.
-                    </p>
-
-                    <div class="tips">
-
-                        <span>
-                            💡 Try to speak naturally
-                        </span>
-
-                        <span>
-                            ⏱️ 30–60 seconds
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="topic-icon">
-                    💬
-                </div>
-
-            </section>
-
-
-            <!-- Speaking -->
-            <section class="speaking-card">
-
-                <div class="card-header">
-
-                    <div>
-
-                        <h3>
-                            Your answer
-                        </h3>
-
-                        <p>
-                            Press the microphone and start speaking.
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        class="status"
-                        id="status"
-                    >
-                        Ready
-                    </div>
-
-                </div>
-
-
-                <!-- Transcript -->
-                <div
-                    class="transcript"
-                    id="transcript"
-                >
-
+                <div id="transcript" class="transcript">
                     <span class="placeholder">
                         Your speech will appear here...
                     </span>
-
                 </div>
 
-
-                <!-- Microphone -->
-                <div class="record-area">
-
-                    <button
-                        class="mic-button"
-                        id="micButton"
-                    >
-                        <span>
-                            🎙️
-                        </span>
-                    </button>
+            </div>
 
 
-                    <p id="micText">
-                        Click to start speaking
-                    </p>
+            <!-- MICROPHONE -->
+            <div class="record-area">
+
+                <button id="micButton" class="mic-button">
+                    🎙️
+                </button>
+
+                <p id="micText">
+                    Click to start speaking
+                </p>
+
+            </div>
 
 
-                    <small>
-                        Your browser may ask for microphone permission.
-                    </small>
-
-                </div>
-
-            </section>
+            <!-- FEEDBACK BUTTON -->
+            <button id="feedbackButton" class="feedback-button">
+                Get AI Feedback
+            </button>
 
 
-            <!-- Feedback -->
-            <section class="feedback-grid">
+            <!-- FEEDBACK -->
+            <div id="feedbackSection" class="feedback-section">
 
-
-                <!-- Score -->
                 <div class="feedback-card">
 
-                    <div class="feedback-title">
+                    <h3>AI Feedback</h3>
 
-                        <span>
-                            🎯
-                        </span>
-
-                        <h3>
-                            Speaking Score
-                        </h3>
-
-                    </div>
-
-
-                    <div class="score">
-
-                        <strong id="score">
-                            --
-                        </strong>
-
-                        <span>
-                            / 10
-                        </span>
-
-                    </div>
-
-
-                    <div class="progress">
-
-                        <div id="progress"></div>
-
-                    </div>
-
-
-                    <p id="scoreText">
-                        Complete a speaking exercise to receive your score.
-                    </p>
+                    <div id="feedback" class="feedback-content"></div>
 
                 </div>
 
+            </div>
 
-                <!-- AI Feedback -->
-                <div class="feedback-card">
+        </section>
 
-                    <div class="feedback-title">
+    </main>
 
-                        <span>
-                            🤖
-                        </span>
-
-                        <h3>
-                            AI Feedback
-                        </h3>
-
-                    </div>
-
-
-                    <div
-                        class="feedback-content"
-                        id="feedback"
-                    >
-
-                        <p>
-                            <strong>
-                                Grammar
-                            </strong>
-
-                            Your feedback will appear here.
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Vocabulary
-                            </strong>
-
-                            Speak first and I'll give you suggestions.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-    </div>
+</div>
 
 
 <script>
 
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
-/* =========================
-   ELEMENTS
-========================= */
+    const micButton =
+        document.getElementById("micButton");
 
-const micButton =
-    document.getElementById("micButton");
+    const micText =
+        document.getElementById("micText");
 
-const transcript =
-    document.getElementById("transcript");
+    const transcript =
+        document.getElementById("transcript");
 
-const micText =
-    document.getElementById("micText");
+    const recordingStatus =
+        document.getElementById("recordingStatus");
 
-const status =
-    document.getElementById("status");
+    const feedbackButton =
+        document.getElementById("feedbackButton");
 
-const score =
-    document.getElementById("score");
+    const feedbackSection =
+        document.getElementById("feedbackSection");
 
-const progress =
-    document.getElementById("progress");
-
-const scoreText =
-    document.getElementById("scoreText");
-
-const feedback =
-    document.getElementById("feedback");
+    const feedback =
+        document.getElementById("feedback");
 
 
-/* =========================
-   VARIABLES
-========================= */
-
-let recognition;
-
-let isRecording = false;
-
-let finalTranscript = "";
-
-
-/* =========================
-   SPEECH RECOGNITION
-========================= */
-
-if (
-    "webkitSpeechRecognition" in window ||
-    "SpeechRecognition" in window
-) {
-
+    /* =========================================
+       SPEECH RECOGNITION
+    ========================================= */
 
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
 
-    recognition =
-        new SpeechRecognition();
+    if (!SpeechRecognition) {
+
+        alert(
+            "Trình duyệt của bạn không hỗ trợ nhận diện giọng nói. Hãy sử dụng Google Chrome."
+        );
+
+    }
 
 
-    recognition.lang =
-        "en-US";
+    const recognition =
+        SpeechRecognition
+            ? new SpeechRecognition()
+            : null;
 
 
-    recognition.continuous =
-        true;
+    if (recognition) {
+
+        recognition.lang = "en-US";
+
+        recognition.continuous = true;
+
+        recognition.interimResults = true;
+
+    }
 
 
-    recognition.interimResults =
-        true;
+    /* =========================================
+       VARIABLES
+    ========================================= */
+
+    let finalTranscript = "";
+
+    let interimTranscript = "";
+
+    let isRecording = false;
+
+    let isStarting = false;
 
 
-    /* =========================
-       START RECORDING
-    ========================= */
+    /* =========================================
+       NORMALIZE TEXT
+    ========================================= */
 
-    recognition.onstart =
-        function () {
+    function normalizeText(text) {
 
-            isRecording = true;
+        return text
+            .replace(/\s+/g, " ")
+            .trim();
+
+    }
 
 
-            micButton.classList.add(
-                "recording"
+    /* =========================================
+       MERGE SPEECH TEXT
+       Prevent duplicate recognition
+    ========================================= */
+
+    function mergeSpeechText(current, incoming) {
+
+        current = normalizeText(current);
+
+        incoming = normalizeText(incoming);
+
+
+        if (!incoming) {
+            return current;
+        }
+
+
+        if (!current) {
+            return incoming;
+        }
+
+
+        /*
+         * Nếu browser gửi lại
+         * toàn bộ câu trước đó
+         */
+
+        if (incoming === current) {
+
+            return current;
+
+        }
+
+
+        /*
+         * incoming đã chứa current
+         */
+
+        if (incoming.startsWith(current)) {
+
+            return incoming;
+
+        }
+
+
+        /*
+         * current đã chứa incoming
+         */
+
+        if (current.includes(incoming)) {
+
+            return current;
+
+        }
+
+
+        /*
+         * Tìm phần bị trùng ở cuối current
+         * và đầu incoming.
+         */
+
+        const currentWords =
+            current.split(" ");
+
+        const incomingWords =
+            incoming.split(" ");
+
+
+        let maxOverlap = 0;
+
+
+        const maxLength =
+            Math.min(
+                currentWords.length,
+                incomingWords.length
             );
 
 
-            micText.textContent =
-                "Listening... speak now";
+        for (
+            let length = 1;
+            length <= maxLength;
+            length++
+        ) {
+
+            const currentPart =
+                currentWords
+                    .slice(-length)
+                    .join(" ")
+                    .toLowerCase();
+
+            const incomingPart =
+                incomingWords
+                    .slice(0, length)
+                    .join(" ")
+                    .toLowerCase();
 
 
-            status.textContent =
-                "Recording";
+            if (currentPart === incomingPart) {
 
-        };
-
-
-    /* =========================
-       SPEECH RESULT
-    ========================= */
-
-    recognition.onresult =
-        function (event) {
-
-
-            let interimText = "";
-
-
-            for (
-                let i = event.resultIndex;
-                i < event.results.length;
-                i++
-            ) {
-
-
-                const text =
-                    event.results[i][0].transcript;
-
-
-                if (
-                    event.results[i].isFinal
-                ) {
-
-                    finalTranscript +=
-                        text + " ";
-
-                } else {
-
-                    interimText +=
-                        text;
-
-                }
+                maxOverlap = length;
 
             }
 
-
-            transcript.innerHTML = `
-
-                <span class="user-text">
-                    ${finalTranscript}
-                </span>
-
-                <span class="interim">
-                    ${interimText}
-                </span>
-
-            `;
-
-        };
+        }
 
 
-    /* =========================
+        /*
+         * Nếu có phần trùng
+         * thì chỉ thêm phần còn lại.
+         */
+
+        if (maxOverlap > 0) {
+
+            return (
+                current +
+                " " +
+                incomingWords
+                    .slice(maxOverlap)
+                    .join(" ")
+            ).trim();
+
+        }
+
+
+        /*
+         * Không trùng
+         */
+
+        return (
+            current +
+            " " +
+            incoming
+        ).trim();
+
+    }
+
+
+    /* =========================================
+       DISPLAY TRANSCRIPT
+    ========================================= */
+
+    function displayTranscript() {
+
+        transcript.innerHTML = "";
+
+
+        if (
+            !finalTranscript &&
+            !interimTranscript
+        ) {
+
+            const placeholder =
+                document.createElement("span");
+
+            placeholder.className =
+                "placeholder";
+
+            placeholder.textContent =
+                "Your speech will appear here...";
+
+            transcript.appendChild(
+                placeholder
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * FINAL TEXT
+         */
+
+        const finalSpan =
+            document.createElement("span");
+
+        finalSpan.className =
+            "user-text";
+
+        finalSpan.textContent =
+            finalTranscript;
+
+        transcript.appendChild(
+            finalSpan
+        );
+
+
+        /*
+         * INTERIM TEXT
+         */
+
+        if (interimTranscript) {
+
+            const interimSpan =
+                document.createElement("span");
+
+            interimSpan.className =
+                "interim";
+
+            interimSpan.textContent =
+                " " + interimTranscript;
+
+            transcript.appendChild(
+                interimSpan
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       START RECORDING
+    ========================================= */
+
+    function startRecording() {
+
+        if (!recognition) {
+            return;
+        }
+
+
+        if (isRecording || isStarting) {
+            return;
+        }
+
+
+        isStarting = true;
+
+
+        /*
+         * Reset bài cũ
+         */
+
+        finalTranscript = "";
+
+        interimTranscript = "";
+
+        feedback.textContent = "";
+
+        feedbackSection.style.display =
+            "none";
+
+
+        displayTranscript();
+
+
+        try {
+
+            recognition.start();
+
+        } catch (error) {
+
+            console.log(
+                "Recognition start error:",
+                error
+            );
+
+            isStarting = false;
+
+        }
+
+    }
+
+
+    /* =========================================
        STOP RECORDING
-    ========================= */
+    ========================================= */
 
-    recognition.onend =
-        function () {
+    function stopRecording() {
 
-
-            isRecording = false;
-
-
-            micButton.classList.remove(
-                "recording"
-            );
+        if (!recognition) {
+            return;
+        }
 
 
-            micText.textContent =
-                "Click to speak again";
+        if (!isRecording) {
+            return;
+        }
 
 
-            status.textContent =
-                "Completed";
+        recognition.stop();
+
+    }
 
 
-            generateFeedback();
-
-        };
-
-
-    /* =========================
-       SPEECH ERROR
-    ========================= */
-
-    recognition.onerror =
-        function (event) {
-
-
-            console.error(
-                "Speech recognition error:",
-                event.error
-            );
-
-
-            isRecording = false;
-
-
-            micButton.classList.remove(
-                "recording"
-            );
-
-
-            status.textContent =
-                "Error";
-
-
-            micText.textContent =
-                "Try speaking again";
-
-        };
-
-
-    /* =========================
-       MICROPHONE BUTTON
-    ========================= */
+    /* =========================================
+       MICROPHONE CLICK
+    ========================================= */
 
     micButton.addEventListener(
         "click",
         function () {
 
+            if (!isRecording) {
 
-            if (isRecording) {
-
-
-                recognition.stop();
-
+                startRecording();
 
             } else {
 
-
-                finalTranscript = "";
-
-
-                transcript.innerHTML = `
-
-                    <span class="placeholder">
-                        Listening...
-                    </span>
-
-                `;
-
-
-                recognition.start();
+                stopRecording();
 
             }
 
@@ -534,218 +531,372 @@ if (
     );
 
 
-} else {
+    /* =========================================
+       RECOGNITION START
+    ========================================= */
+
+    if (recognition) {
+
+        recognition.onstart =
+            function () {
+
+                isStarting = false;
+
+                isRecording = true;
 
 
-    micText.textContent =
-        "Speech recognition is not supported in this browser.";
+                micButton.classList.add(
+                    "recording"
+                );
 
 
-    micButton.disabled =
-        true;
-
-}
+                micText.textContent =
+                    "Listening... Click to stop";
 
 
+                recordingStatus.textContent =
+                    "Recording";
 
-/* =========================
-   AI FEEDBACK
-========================= */
-
-async function generateFeedback() {
+            };
 
 
-    const text =
-        finalTranscript.trim();
+    /* =========================================
+       RECOGNITION RESULT
+    ========================================= */
+
+        recognition.onresult =
+            function (event) {
+
+                let newInterim = "";
 
 
-    if (!text) {
+                for (
+                    let i = event.resultIndex;
+                    i < event.results.length;
+                    i++
+                ) {
 
-        return;
+                    const text =
+                        normalizeText(
+                            event.results[i][0]
+                                .transcript
+                        );
+
+
+                    if (
+                        event.results[i].isFinal
+                    ) {
+
+                        /*
+                         * QUAN TRỌNG:
+                         *
+                         * Không nối thẳng text vào
+                         * finalTranscript.
+                         *
+                         * Dùng mergeSpeechText()
+                         * để chống lặp.
+                         */
+
+                        finalTranscript =
+                            mergeSpeechText(
+                                finalTranscript,
+                                text
+                            );
+
+
+                    } else {
+
+                        /*
+                         * Interim chỉ hiển thị,
+                         * KHÔNG cộng vào final.
+                         */
+
+                        newInterim =
+                            mergeSpeechText(
+                                "",
+                                text
+                            );
+
+                    }
+
+                }
+
+
+                interimTranscript =
+                    newInterim;
+
+
+                displayTranscript();
+
+            };
+
+
+    /* =========================================
+       RECOGNITION ERROR
+    ========================================= */
+
+        recognition.onerror =
+            function (event) {
+
+                console.log(
+                    "Speech recognition error:",
+                    event.error
+                );
+
+
+                if (
+                    event.error ===
+                    "not-allowed"
+                ) {
+
+                    alert(
+                        "Bạn chưa cấp quyền sử dụng microphone."
+                    );
+
+                }
+
+
+                if (
+                    event.error ===
+                    "no-speech"
+                ) {
+
+                    recordingStatus.textContent =
+                        "No speech detected";
+
+                }
+
+            };
+
+
+    /* =========================================
+       RECOGNITION END
+    ========================================= */
+
+        recognition.onend =
+            function () {
+
+                isRecording = false;
+
+                isStarting = false;
+
+
+                micButton.classList.remove(
+                    "recording"
+                );
+
+
+                micText.textContent =
+                    "Click to start speaking";
+
+
+                recordingStatus.textContent =
+                    "Ready";
+
+
+                /*
+                 * Không để interim tồn tại
+                 * như một phần của bài nói.
+                 */
+
+                interimTranscript = "";
+
+
+                displayTranscript();
+
+
+                /*
+                 * Nếu có bài nói thì tự động
+                 * gửi lên AI.
+                 */
+
+                if (
+                    finalTranscript.trim()
+                ) {
+
+                    generateFeedback();
+
+                }
+
+            };
 
     }
 
 
-    /* =========================
-       AI ANALYZING
-    ========================= */
+    /* =========================================
+       GET AI FEEDBACK
+    ========================================= */
 
-    status.textContent =
-        "AI is analyzing...";
+    feedbackButton.addEventListener(
+        "click",
+        function () {
 
+            generateFeedback();
 
-    scoreText.textContent =
-        "AI đang phân tích câu trả lời của bạn...";
-
-
-    feedback.innerHTML = `
-
-        <p>
-            🤖 Đang phân tích câu trả lời...
-        </p>
-
-    `;
+        }
+    );
 
 
-    try {
+    /* =========================================
+       SEND TO SERVER
+    ========================================= */
 
+    async function generateFeedback() {
 
-        /* =========================
-           SEND TO BACKEND
-        ========================= */
-
-        const response =
-            await fetch(
-                "/api/feedback",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body: JSON.stringify({
-
-                        transcript: text
-
-                    })
-
-                }
+        const text =
+            normalizeText(
+                finalTranscript
             );
 
 
-        const data =
-            await response.json();
+        if (!text) {
 
-
-        /* =========================
-           CHECK ERROR
-        ========================= */
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "AI request failed"
+            alert(
+                "Hãy nói một câu trả lời trước nhé."
             );
+
+            return;
 
         }
 
 
-        /* =========================
-           DISPLAY FEEDBACK
-        ========================= */
-
-        status.textContent =
-            "AI Feedback Ready";
+        feedbackSection.style.display =
+            "block";
 
 
-        feedback.innerHTML = `
-
-            <p
-                style="
-                    white-space: pre-line;
-                    line-height: 1.7;
-                "
-            >
-                ${data.feedback}
-            </p>
-
-        `;
+        feedback.textContent =
+            "AI đang phân tích bài nói của bạn...";
 
 
-        /* =========================
-           GET ONLY OVERALL SCORE
-        ========================= */
+        feedbackButton.disabled =
+            true;
 
-        const overallMatch =
-            data.feedback.match(
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/feedback",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            transcript: text
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Không thể nhận feedback."
+                );
+
+            }
+
+
+            /*
+             * Dùng textContent thay vì innerHTML
+             * để hiển thị feedback an toàn.
+             */
+
+            feedback.textContent =
+                data.feedback;
+
+
+            /*
+             * Nếu giao diện cũ có score,
+             * lấy Overall Score từ feedback.
+             */
+
+            updateOverallScore(
+                data.feedback
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Feedback error:",
+                error
+            );
+
+
+            feedback.textContent =
+                "Không thể kết nối với AI. Vui lòng thử lại.";
+
+        }
+
+
+        feedbackButton.disabled =
+            false;
+
+    }
+
+
+    /* =========================================
+       UPDATE OVERALL SCORE
+    ========================================= */
+
+    function updateOverallScore(text) {
+
+        /*
+         * Chấp nhận:
+         *
+         * 6/10
+         * 6.5/10
+         * 7/10
+         * 7.5/10
+         * ...
+         */
+
+        const match =
+            text.match(
                 /Overall\s*Score\s*:\s*(10(?:\.0)?|[1-9](?:\.[05])?)\s*\/\s*10/i
             );
 
 
-        /* =========================
-           DISPLAY SCORE
-        ========================= */
-
-        if (overallMatch) {
-
-
-            const aiScore =
-                Math.min(
-                    10,
-                    parseFloat(
-                        overallMatch[1]
-                    )
-                );
-
-
-            score.textContent =
-                aiScore;
-
-
-            /*
-                Convert 1–10
-                into percentage
-                for progress bar
-            */
-
-            progress.style.width =
-                (
-                    aiScore / 10 * 100
-                ) + "%";
-
-
-            scoreText.textContent =
-                "Điểm được AI đánh giá dựa trên câu trả lời của bạn.";
-
-
-        } else {
-
-
-            score.textContent =
-                "--";
-
-
-            progress.style.width =
-                "0%";
-
-
-            scoreText.textContent =
-                "AI đã hoàn thành phần nhận xét.";
-
+        if (!match) {
+            return;
         }
 
 
-    } catch (error) {
+        const score =
+            match[1];
 
 
-        console.error(
-            "AI Error:",
-            error
-        );
+        /*
+         * Nếu HTML cũ có phần tử
+         * id="overallScore"
+         * thì cập nhật nó.
+         */
+
+        const scoreElement =
+            document.getElementById(
+                "overallScore"
+            );
 
 
-        status.textContent =
-            "AI Error";
+        if (scoreElement) {
 
+            scoreElement.textContent =
+                score + "/10";
 
-        feedback.innerHTML = `
-
-            <p>
-                ❌ Không thể kết nối với AI.
-                Hãy kiểm tra server trong Terminal.
-            </p>
-
-        `;
+        }
 
     }
 
-}
 
 </script>
 
