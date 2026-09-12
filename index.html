@@ -1,9 +1,7 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -19,7 +17,6 @@
     >
 
     <style>
-
         /* =========================
            SPEAKING SCORE
         ========================= */
@@ -37,13 +34,9 @@
             );
 
             color: white;
-
             border-radius: 22px;
-
             padding: 28px;
-
             text-align: center;
-
             margin-bottom: 16px;
 
             box-shadow:
@@ -52,42 +45,30 @@
 
         .speaking-score-label {
             font-size: 14px;
-
             font-weight: 600;
-
             letter-spacing: .08em;
-
             text-transform: uppercase;
-
             opacity: .75;
-
             margin-bottom: 6px;
         }
 
         .speaking-score-number {
             font-size: 58px;
-
             font-weight: 800;
-
             line-height: 1.1;
         }
 
         .speaking-score-number span {
             font-size: 22px;
-
             font-weight: 500;
-
             opacity: .65;
         }
 
         .speaking-score-subtitle {
             margin-top: 8px;
-
             font-size: 14px;
-
             opacity: .7;
         }
-
 
         /* =========================
            CRITERIA
@@ -95,22 +76,15 @@
 
         .criteria-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
+            grid-template-columns: repeat(4, 1fr);
             gap: 14px;
         }
 
         .score-card {
             background: #fff;
-
             border: 1px solid #e5e7eb;
-
             border-radius: 16px;
-
             padding: 20px 12px;
-
             text-align: center;
 
             box-shadow:
@@ -119,20 +93,15 @@
 
         .score-card-label {
             color: #6b7280;
-
             font-size: 13px;
-
             margin-bottom: 8px;
         }
 
         .score-card-number {
             color: #111827;
-
             font-size: 30px;
-
             font-weight: 750;
         }
-
 
         /* =========================
            RECORDING ANIMATION
@@ -143,7 +112,6 @@
         }
 
         @keyframes micPulse {
-
             0% {
                 transform: scale(1);
             }
@@ -155,37 +123,28 @@
             100% {
                 transform: scale(1);
             }
-
         }
-
 
         /* =========================
            MOBILE
         ========================= */
 
         @media (max-width: 700px) {
-
             .criteria-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .speaking-score-number {
                 font-size: 48px;
             }
-
         }
-
     </style>
-
 </head>
 
 
 <body>
 
-
 <div class="app">
-
 
     <!-- =========================
          SIDEBAR
@@ -194,13 +153,11 @@
     <aside class="sidebar">
 
         <div class="logo">
-
             <span>🎙️</span>
 
             <strong>
                 Speaking Coach
             </strong>
-
         </div>
 
 
@@ -209,7 +166,6 @@
             <p class="sidebar-title">
                 Practice
             </p>
-
 
             <button
                 class="sidebar-item active"
@@ -223,13 +179,11 @@
     </aside>
 
 
-
     <!-- =========================
          MAIN
     ========================= -->
 
     <main class="main">
-
 
         <div class="topbar">
 
@@ -248,7 +202,6 @@
         </div>
 
 
-
         <!-- =========================
              TOPIC
         ========================= -->
@@ -261,18 +214,14 @@
                     Today's Topic
                 </span>
 
-
                 <h2 id="topic">
                     Describe a person who is important to you.
                 </h2>
 
-
                 <p id="topicDescription">
-
                     You should say who this person is,
                     how you know them, and explain why
                     they are important to you.
-
                 </p>
 
             </div>
@@ -280,13 +229,11 @@
         </section>
 
 
-
         <!-- =========================
              SPEAKING
         ========================= -->
 
         <section class="speaking-card">
-
 
             <div class="speaking-header">
 
@@ -296,7 +243,6 @@
                         Your Answer
                     </h2>
 
-
                     <p>
                         Speak naturally. Your answer
                         will appear below.
@@ -305,7 +251,6 @@
                 </div>
 
             </div>
-
 
 
             <!-- =====================
@@ -322,13 +267,11 @@
                     🎙️
                 </button>
 
-
                 <p id="micStatus">
                     Nhấn micro để bắt đầu nói
                 </p>
 
             </div>
-
 
 
             <!-- =====================
@@ -337,13 +280,11 @@
 
             <div class="transcript-box">
 
-
                 <div class="transcript-header">
 
                     <span>
                         Transcript
                     </span>
-
 
                     <button
                         id="clearButton"
@@ -369,7 +310,6 @@
             </div>
 
 
-
             <!-- =====================
                  FEEDBACK BUTTON
             ====================== -->
@@ -382,9 +322,7 @@
                 ✨ Get AI Feedback
             </button>
 
-
         </section>
-
 
 
         <!-- =========================
@@ -396,7 +334,6 @@
             class="score-section"
         >
 
-
             <!-- BIG SCORE -->
 
             <div class="speaking-score">
@@ -405,41 +342,32 @@
                     Speaking Score
                 </div>
 
-
                 <div
                     id="speakingScore"
                     class="speaking-score-number"
                 >
                     -
-
                     <span>
                         / 10
                     </span>
-
                 </div>
 
-
                 <div class="speaking-score-subtitle">
-
                     Your estimated IELTS Speaking performance
-
                 </div>
 
             </div>
-
 
 
             <!-- FOUR CRITERIA -->
 
             <div class="criteria-grid">
 
-
                 <div class="score-card">
 
                     <div class="score-card-label">
                         Grammar
                     </div>
-
 
                     <div
                         id="grammarScore"
@@ -451,13 +379,11 @@
                 </div>
 
 
-
                 <div class="score-card">
 
                     <div class="score-card-label">
                         Vocabulary
                     </div>
-
 
                     <div
                         id="vocabularyScore"
@@ -469,13 +395,11 @@
                 </div>
 
 
-
                 <div class="score-card">
 
                     <div class="score-card-label">
                         Fluency
                     </div>
-
 
                     <div
                         id="fluencyScore"
@@ -487,13 +411,11 @@
                 </div>
 
 
-
                 <div class="score-card">
 
                     <div class="score-card-label">
                         Pronunciation
                     </div>
-
 
                     <div
                         id="pronunciationScore"
@@ -504,11 +426,9 @@
 
                 </div>
 
-
             </div>
 
         </section>
-
 
 
         <!-- =========================
@@ -520,7 +440,6 @@
             class="feedback-card"
         >
 
-
             <div class="feedback-header">
 
                 <div>
@@ -528,7 +447,6 @@
                     <h2>
                         🤖 AI Feedback
                     </h2>
-
 
                     <p>
                         Detailed feedback about your
@@ -540,7 +458,6 @@
             </div>
 
 
-
             <div
                 id="feedback"
                 class="feedback-content"
@@ -550,27 +467,25 @@
 
                     Sau khi bạn hoàn thành câu trả lời,
                     hãy nhấn
+
                     <strong>
                         Get AI Feedback
                     </strong>
+
                     để AI phân tích bài nói.
 
                 </div>
 
             </div>
 
-
         </section>
-
 
     </main>
 
 </div>
 
 
-
 <script>
-
 
     /* ==================================================
        ELEMENTS
@@ -579,50 +494,38 @@
     const micButton =
         document.getElementById("micButton");
 
-
     const micStatus =
         document.getElementById("micStatus");
-
 
     const transcript =
         document.getElementById("transcript");
 
-
     const clearButton =
         document.getElementById("clearButton");
-
 
     const feedbackButton =
         document.getElementById("feedbackButton");
 
-
     const feedback =
         document.getElementById("feedback");
-
 
     const scoreSection =
         document.getElementById("scoreSection");
 
-
     const speakingScore =
         document.getElementById("speakingScore");
-
 
     const grammarScore =
         document.getElementById("grammarScore");
 
-
     const vocabularyScore =
         document.getElementById("vocabularyScore");
-
 
     const fluencyScore =
         document.getElementById("fluencyScore");
 
-
     const pronunciationScore =
         document.getElementById("pronunciationScore");
-
 
 
     /* ==================================================
@@ -633,30 +536,25 @@
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-
     let recognition = null;
-
 
     let isRecording = false;
 
 
     /*
-     * QUAN TRỌNG:
+     * Lưu từng result theo index.
      *
-     * Không dùng mergeSpeechText nữa.
+     * Web Speech API có thể cập nhật lại
+     * cùng một result nhiều lần.
      *
-     * Mỗi result index của Web Speech API
-     * sẽ có một đoạn text riêng.
+     * Vì vậy KHÔNG append text mỗi lần onresult.
      *
-     * Nếu Chrome cập nhật result cũ,
-     * ta THAY đoạn cũ thay vì nối thêm.
+     * Ta thay thế result cũ bằng result mới.
      */
 
     let finalResults = {};
 
-
     let interimResults = {};
-
 
 
     /* ==================================================
@@ -672,7 +570,6 @@
     }
 
 
-
     /* ==================================================
        ESCAPE HTML
     ================================================== */
@@ -682,19 +579,16 @@
         const div =
             document.createElement("div");
 
-
         div.textContent =
             text;
-
 
         return div.innerHTML;
 
     }
 
 
-
     /* ==================================================
-       BUILD FINAL TRANSCRIPT
+       FINAL TRANSCRIPT
     ================================================== */
 
     function getFinalTranscript() {
@@ -716,9 +610,8 @@
     }
 
 
-
     /* ==================================================
-       BUILD INTERIM TRANSCRIPT
+       INTERIM TRANSCRIPT
     ================================================== */
 
     function getInterimTranscript() {
@@ -740,7 +633,6 @@
     }
 
 
-
     /* ==================================================
        RENDER TRANSCRIPT
     ================================================== */
@@ -749,7 +641,6 @@
 
         const finalText =
             getFinalTranscript();
-
 
         const interimText =
             getInterimTranscript();
@@ -767,7 +658,6 @@
             `;
 
             return;
-
         }
 
 
@@ -794,9 +684,8 @@
     }
 
 
-
     /* ==================================================
-       CREATE RECOGNITION
+       CREATE SPEECH RECOGNITION
     ================================================== */
 
     if (!SpeechRecognition) {
@@ -807,7 +696,6 @@
         micButton.disabled = true;
 
     } else {
-
 
         recognition =
             new SpeechRecognition();
@@ -829,7 +717,6 @@
             1;
 
 
-
         /* ==================================================
            ON RESULT
         ================================================== */
@@ -837,12 +724,9 @@
         recognition.onresult =
             function(event) {
 
-
                 /*
-                 * event.resultIndex là vị trí đầu tiên
-                 * mà Chrome vừa cập nhật.
-                 *
-                 * Ta chỉ cập nhật đúng result đó.
+                 * Chỉ cập nhật các result mà
+                 * trình duyệt vừa thay đổi.
                  */
 
                 for (
@@ -850,7 +734,6 @@
                     i < event.results.length;
                     i++
                 ) {
-
 
                     const result =
                         event.results[i];
@@ -869,35 +752,23 @@
 
                     if (result.isFinal) {
 
-
                         /*
-                         * Nếu result này đã tồn tại,
-                         * thay thế nó.
-                         *
-                         * KHÔNG append.
+                         * FINAL:
+                         * thay thế result cũ,
+                         * tuyệt đối không append.
                          */
 
                         finalResults[i] =
                             text;
 
 
-                        /*
-                         * Interim của cùng index
-                         * không còn cần nữa.
-                         */
-
                         delete interimResults[i];
-
 
                     } else {
 
-
                         /*
-                         * Interim có thể thay đổi
-                         * liên tục.
-                         *
-                         * Vì vậy cũng THAY THẾ,
-                         * không nối thêm.
+                         * INTERIM:
+                         * cũng thay thế result cũ.
                          */
 
                         interimResults[i] =
@@ -911,7 +782,6 @@
                 renderTranscript();
 
             };
-
 
 
         /* ==================================================
@@ -936,7 +806,6 @@
             };
 
 
-
         /* ==================================================
            ON END
         ================================================== */
@@ -957,7 +826,6 @@
                     "Đã dừng. Nhấn micro để nói tiếp.";
 
             };
-
 
 
         /* ==================================================
@@ -1008,7 +876,6 @@
             };
 
 
-
         /* ==================================================
            MICROPHONE BUTTON
         ================================================== */
@@ -1017,9 +884,7 @@
             "click",
             function() {
 
-
                 if (!isRecording) {
-
 
                     try {
 
@@ -1033,9 +898,7 @@
 
                     }
 
-
                 } else {
-
 
                     recognition.stop();
 
@@ -1047,7 +910,6 @@
     }
 
 
-
     /* ==================================================
        CLEAR
     ================================================== */
@@ -1056,9 +918,8 @@
         "click",
         function() {
 
-
             /*
-             * Xóa toàn bộ speech results.
+             * Xóa toàn bộ kết quả speech.
              */
 
             finalResults = {};
@@ -1085,9 +946,11 @@
 
                     Sau khi bạn hoàn thành câu trả lời,
                     hãy nhấn
+
                     <strong>
                         Get AI Feedback
                     </strong>
+
                     để AI phân tích bài nói.
 
                 </div>
@@ -1106,21 +969,17 @@
             grammarScore.textContent =
                 "-";
 
-
             vocabularyScore.textContent =
                 "-";
 
-
             fluencyScore.textContent =
                 "-";
-
 
             pronunciationScore.textContent =
                 "-";
 
         }
     );
-
 
 
     /* ==================================================
@@ -1132,6 +991,10 @@
         category
     ) {
 
+        /*
+         * Escape tên category để dùng an toàn
+         * trong RegExp.
+         */
 
         const escapedCategory =
             category.replace(
@@ -1141,13 +1004,21 @@
 
 
         /*
-         * Chấp nhận:
+         * Chỉ chấp nhận:
          *
          * 6/10
          * 6.5/10
          * 7/10
          * 7.5/10
+         * ...
+         * 9.5/10
          * 10/10
+         *
+         * KHÔNG chấp nhận:
+         *
+         * 6.2
+         * 7.1
+         * 8.7
          */
 
         const regex =
@@ -1171,13 +1042,11 @@
     }
 
 
-
     /* ==================================================
        UPDATE SCORES
     ================================================== */
 
     function updateScores(text) {
-
 
         const grammar =
             extractScore(
@@ -1215,7 +1084,7 @@
 
 
         /*
-         * Hiện score section.
+         * Hiện Speaking Score.
          */
 
         scoreSection.style.display =
@@ -1264,13 +1133,11 @@
     }
 
 
-
     /* ==================================================
        FORMAT FEEDBACK
     ================================================== */
 
     function formatFeedback(text) {
-
 
         let html =
             escapeHTML(text);
@@ -1294,7 +1161,6 @@
 
         headings.forEach(
             function(heading) {
-
 
                 const escaped =
                     heading.replace(
@@ -1330,7 +1196,6 @@
     }
 
 
-
     /* ==================================================
        AI FEEDBACK
     ================================================== */
@@ -1339,9 +1204,8 @@
         "click",
         async function() {
 
-
             /*
-             * Lấy transcript FINAL thôi.
+             * Chỉ lấy FINAL transcript.
              *
              * Không gửi interim cho AI.
              */
@@ -1388,12 +1252,10 @@
 
             try {
 
-
                 const response =
                     await fetch(
                         "/api/feedback",
                         {
-
                             method: "POST",
 
                             headers: {
@@ -1405,7 +1267,6 @@
                                 JSON.stringify({
                                     transcript: text
                                 })
-
                         }
                     );
 
@@ -1449,7 +1310,6 @@
 
             } catch (error) {
 
-
                 console.error(
                     error
                 );
@@ -1474,7 +1334,6 @@
 
             } finally {
 
-
                 feedbackButton.disabled =
                     false;
 
@@ -1487,11 +1346,7 @@
         }
     );
 
-
 </script>
 
-
 </body>
-
 </html>
-```
