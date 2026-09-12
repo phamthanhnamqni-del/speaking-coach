@@ -1,1350 +1,2108 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>IELTS Speaking Coach</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
     <style>
-        /* =========================
-           SPEAKING SCORE
-        ========================= */
-
-        .score-section {
-            display: none;
-            margin: 24px 0;
+        :root {
+            --bg: #f4f7fb;
+            --card: rgba(255,255,255,0.92);
+            --text: #172033;
+            --muted: #7b8497;
+            --border: #e7ebf2;
+            --primary: #315bea;
+            --primary-dark: #2448c7;
+            --soft: #eef3ff;
+            --danger: #ef4444;
+            --shadow: 0 18px 50px rgba(25,39,75,0.08);
         }
 
-        .speaking-score {
-            background: linear-gradient(
-                135deg,
-                #111827,
-                #374151
-            );
-
-            color: white;
-            border-radius: 22px;
-            padding: 28px;
-            text-align: center;
-            margin-bottom: 16px;
-
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, .12);
+        * {
+            box-sizing: border-box;
         }
 
-        .speaking-score-label {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            opacity: .75;
-            margin-bottom: 6px;
+        body {
+            margin: 0;
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, #edf2ff 0, transparent 35%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
         }
 
-        .speaking-score-number {
-            font-size: 58px;
-            font-weight: 800;
-            line-height: 1.1;
+        button,
+        select {
+            font: inherit;
         }
 
-        .speaking-score-number span {
-            font-size: 22px;
-            font-weight: 500;
-            opacity: .65;
+        .container {
+            width: min(1100px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 32px 0 60px;
         }
 
-        .speaking-score-subtitle {
-            margin-top: 8px;
-            font-size: 14px;
-            opacity: .7;
+        .header {
+            margin-bottom: 24px;
         }
 
-        /* =========================
-           CRITERIA
-        ========================= */
-
-        .criteria-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-        }
-
-        .score-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 20px 12px;
-            text-align: center;
-
-            box-shadow:
-                0 4px 14px rgba(0, 0, 0, .05);
-        }
-
-        .score-card-label {
-            color: #6b7280;
+        .badge {
+            display: inline-flex;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--soft);
+            color: var(--primary);
             font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(32px, 5vw, 52px);
+            letter-spacing: -1.5px;
+            line-height: 1.05;
+        }
+
+        .subtitle {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .controls {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .control-group label {
+            display: block;
             margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
         }
 
-        .score-card-number {
-            color: #111827;
-            font-size: 30px;
-            font-weight: 750;
+        select {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            border-radius: 13px;
+            padding: 13px 14px;
+            outline: none;
+            cursor: pointer;
         }
 
-        /* =========================
-           RECORDING ANIMATION
-        ========================= */
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(49,91,234,0.08);
+        }
+
+        .question-card {
+            padding: 28px;
+        }
+
+        .question-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .part-label {
+            display: inline-flex;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: var(--soft);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .question-number {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .question {
+            margin: 0;
+            font-size: clamp(23px, 3vw, 34px);
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+        }
+
+        .hint {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .cue-card {
+            margin-top: 22px;
+            padding: 20px;
+            border-radius: 17px;
+            background: #f8faff;
+            border: 1px solid #e4eaff;
+        }
+
+        .cue-card h3 {
+            margin: 0 0 14px;
+            font-size: 16px;
+        }
+
+        .cue-card ul {
+            margin: 0;
+            padding-left: 22px;
+            color: #46516a;
+            line-height: 1.8;
+        }
+
+        .record-area {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mic-button {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-size: 28px;
+            box-shadow: 0 12px 25px rgba(49,91,234,0.24);
+            transition: 0.2s ease;
+        }
+
+        .mic-button:hover {
+            transform: translateY(-2px);
+            background: var(--primary-dark);
+        }
 
         .mic-button.recording {
-            animation: micPulse 1.2s infinite;
+            background: var(--danger);
+            animation: pulse 1.2s infinite;
         }
 
-        @keyframes micPulse {
+        @keyframes pulse {
             0% {
-                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(239,68,68,0.35);
             }
 
-            50% {
-                transform: scale(1.08);
+            70% {
+                box-shadow: 0 0 0 18px rgba(239,68,68,0);
             }
 
             100% {
-                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(239,68,68,0);
             }
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
+        .record-status {
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 10px;
+        }
 
-        @media (max-width: 700px) {
-            .criteria-grid {
-                grid-template-columns: repeat(2, 1fr);
+        .section {
+            margin-top: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--muted);
+            margin-bottom: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .transcript {
+            min-height: 100px;
+            padding: 17px;
+            border-radius: 15px;
+            background: #f8f9fc;
+            border: 1px solid var(--border);
+            color: #39445b;
+            line-height: 1.65;
+            white-space: pre-wrap;
+        }
+
+        .feedback {
+            padding: 19px;
+            border-radius: 15px;
+            background: #f8faff;
+            border: 1px solid #e1e8ff;
+            color: #34405a;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .score-area {
+            display: none;
+            margin-top: 22px;
+            text-align: center;
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .score-value {
+            margin-top: 4px;
+            font-size: 42px;
+            font-weight: 850;
+            color: var(--primary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 12px;
+            padding: 12px 17px;
+            cursor: pointer;
+            font-weight: 750;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: #f0f3f8;
+            color: #34405a;
+        }
+
+        .btn-secondary:hover {
+            background: #e7ebf2;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .history {
+            margin-top: 24px;
+            padding: 24px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .history-title {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .history-empty {
+            color: var(--muted);
+            font-size: 14px;
+            padding: 10px 0;
+        }
+
+        .history-item {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 17px;
+            margin-top: 12px;
+            background: #fff;
+        }
+
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 9px;
+            flex-wrap: wrap;
+        }
+
+        .history-question {
+            font-weight: 750;
+            line-height: 1.5;
+        }
+
+        .history-score {
+            color: var(--primary);
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .history-transcript {
+            margin-top: 10px;
+            color: #4d5870;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .history-feedback {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+            color: #586278;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: blink 1s infinite alternate;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            from {
+                opacity: 0.25;
             }
 
-            .speaking-score-number {
-                font-size: 48px;
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                width: min(100% - 20px, 1100px);
+                padding-top: 20px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .question-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .actions {
+                justify-content: stretch;
+            }
+
+            .actions .btn {
+                flex: 1;
             }
         }
     </style>
 </head>
 
-
 <body>
 
-<div class="app">
+<div class="container">
 
-    <!-- =========================
-         SIDEBAR
-    ========================= -->
+    <header class="header">
+        <div class="badge">IELTS Speaking Coach</div>
 
-    <aside class="sidebar">
+        <h1>Speak. Practice. Improve.</h1>
 
-        <div class="logo">
-            <span>🎙️</span>
+        <p class="subtitle">
+            Practice IELTS Speaking questions naturally and get detailed AI feedback on every answer.
+        </p>
+    </header>
 
-            <strong>
-                Speaking Coach
-            </strong>
+
+    <section class="card controls">
+
+        <div class="control-group">
+            <label for="partSelect">Speaking Part</label>
+
+            <select id="partSelect">
+                <option value="part1">Part 1</option>
+                <option value="part2">Part 2</option>
+                <option value="part3">Part 3</option>
+            </select>
         </div>
 
 
-        <div class="sidebar-section">
+        <div class="control-group">
+            <label for="topicSelect">Topic</label>
 
-            <p class="sidebar-title">
-                Practice
-            </p>
+            <select id="topicSelect"></select>
+        </div>
+
+    </section>
+
+
+    <main class="card question-card">
+
+        <div class="question-top">
+
+            <span class="part-label" id="partLabel">
+                PART 1
+            </span>
+
+            <span class="question-number" id="questionNumber">
+                Question 1
+            </span>
+
+        </div>
+
+
+        <h2 class="question" id="questionText">
+            Loading question...
+        </h2>
+
+
+        <p class="hint" id="questionHint">
+            Answer naturally and try to give enough detail.
+        </p>
+
+
+        <div class="cue-card" id="cueCard" style="display:none;">
+
+            <h3 id="cueTitle">
+                You should say:
+            </h3>
+
+            <ul id="cuePoints"></ul>
+
+        </div>
+
+
+        <div class="record-area">
 
             <button
-                class="sidebar-item active"
-                type="button"
+                class="mic-button"
+                id="micButton"
+                title="Start recording"
             >
-                🗣️ Speaking
+                🎙️
             </button>
 
         </div>
 
-    </aside>
 
-
-    <!-- =========================
-         MAIN
-    ========================= -->
-
-    <main class="main">
-
-        <div class="topbar">
-
-            <div>
-
-                <h1>
-                    IELTS Speaking Coach
-                </h1>
-
-                <p>
-                    Practice speaking and get feedback from AI.
-                </p>
-
-            </div>
-
+        <div class="record-status" id="recordStatus">
+            Click the microphone and start speaking.
         </div>
 
 
-        <!-- =========================
-             TOPIC
-        ========================= -->
+        <div class="section">
 
-        <section class="topic-card">
-
-            <div>
-
-                <span class="topic-label">
-                    Today's Topic
-                </span>
-
-                <h2 id="topic">
-                    Describe a person who is important to you.
-                </h2>
-
-                <p id="topicDescription">
-                    You should say who this person is,
-                    how you know them, and explain why
-                    they are important to you.
-                </p>
-
+            <div class="section-title">
+                Your Answer
             </div>
-
-        </section>
-
-
-        <!-- =========================
-             SPEAKING
-        ========================= -->
-
-        <section class="speaking-card">
-
-            <div class="speaking-header">
-
-                <div>
-
-                    <h2>
-                        Your Answer
-                    </h2>
-
-                    <p>
-                        Speak naturally. Your answer
-                        will appear below.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- =====================
-                 MICROPHONE
-            ====================== -->
-
-            <div class="mic-area">
-
-                <button
-                    id="micButton"
-                    class="mic-button"
-                    type="button"
-                >
-                    🎙️
-                </button>
-
-                <p id="micStatus">
-                    Nhấn micro để bắt đầu nói
-                </p>
-
-            </div>
-
-
-            <!-- =====================
-                 TRANSCRIPT
-            ====================== -->
-
-            <div class="transcript-box">
-
-                <div class="transcript-header">
-
-                    <span>
-                        Transcript
-                    </span>
-
-                    <button
-                        id="clearButton"
-                        type="button"
-                    >
-                        Clear
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="transcript"
-                    class="transcript"
-                >
-
-                    <span class="placeholder">
-                        Your speech will appear here...
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- =====================
-                 FEEDBACK BUTTON
-            ====================== -->
-
-            <button
-                id="feedbackButton"
-                class="feedback-button"
-                type="button"
-            >
-                ✨ Get AI Feedback
-            </button>
-
-        </section>
-
-
-        <!-- =========================
-             SPEAKING SCORE
-        ========================= -->
-
-        <section
-            id="scoreSection"
-            class="score-section"
-        >
-
-            <!-- BIG SCORE -->
-
-            <div class="speaking-score">
-
-                <div class="speaking-score-label">
-                    Speaking Score
-                </div>
-
-                <div
-                    id="speakingScore"
-                    class="speaking-score-number"
-                >
-                    -
-                    <span>
-                        / 10
-                    </span>
-                </div>
-
-                <div class="speaking-score-subtitle">
-                    Your estimated IELTS Speaking performance
-                </div>
-
-            </div>
-
-
-            <!-- FOUR CRITERIA -->
-
-            <div class="criteria-grid">
-
-                <div class="score-card">
-
-                    <div class="score-card-label">
-                        Grammar
-                    </div>
-
-                    <div
-                        id="grammarScore"
-                        class="score-card-number"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <div class="score-card">
-
-                    <div class="score-card-label">
-                        Vocabulary
-                    </div>
-
-                    <div
-                        id="vocabularyScore"
-                        class="score-card-number"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <div class="score-card">
-
-                    <div class="score-card-label">
-                        Fluency
-                    </div>
-
-                    <div
-                        id="fluencyScore"
-                        class="score-card-number"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-
-                <div class="score-card">
-
-                    <div class="score-card-label">
-                        Pronunciation
-                    </div>
-
-                    <div
-                        id="pronunciationScore"
-                        class="score-card-number"
-                    >
-                        -
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             AI FEEDBACK
-        ========================= -->
-
-        <section
-            id="feedbackCard"
-            class="feedback-card"
-        >
-
-            <div class="feedback-header">
-
-                <div>
-
-                    <h2>
-                        🤖 AI Feedback
-                    </h2>
-
-                    <p>
-                        Detailed feedback about your
-                        speaking performance.
-                    </p>
-
-                </div>
-
-            </div>
-
 
             <div
-                id="feedback"
-                class="feedback-content"
+                class="transcript"
+                id="transcript"
             >
-
-                <div class="feedback-placeholder">
-
-                    Sau khi bạn hoàn thành câu trả lời,
-                    hãy nhấn
-
-                    <strong>
-                        Get AI Feedback
-                    </strong>
-
-                    để AI phân tích bài nói.
-
-                </div>
-
+                Your transcript will appear here...
             </div>
 
-        </section>
+        </div>
+
+
+        <div
+            class="score-area"
+            id="scoreArea"
+        >
+
+            <div class="score-label">
+                Speaking Score
+            </div>
+
+            <div
+                class="score-value"
+                id="scoreValue"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="section">
+
+            <div class="section-title">
+                AI Coach Feedback
+            </div>
+
+            <div
+                class="feedback"
+                id="feedback"
+            >
+                Your AI feedback will appear here after you finish your answer.
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="btn btn-secondary"
+                id="tryAgainButton"
+            >
+                Try Again
+            </button>
+
+            <button
+                class="btn btn-primary"
+                id="nextButton"
+            >
+                Next Question →
+            </button>
+
+        </div>
 
     </main>
+
+
+    <section class="card history">
+
+        <div class="history-header">
+
+            <h2 class="history-title">
+                Practice History
+            </h2>
+
+            <button
+                class="btn btn-secondary"
+                id="clearHistoryButton"
+            >
+                Clear
+            </button>
+
+        </div>
+
+        <div id="historyList">
+            <div class="history-empty">
+                No completed questions yet.
+            </div>
+        </div>
+
+    </section>
 
 </div>
 
 
 <script>
 
-    /* ==================================================
-       ELEMENTS
-    ================================================== */
+const topics = [
 
-    const micButton =
-        document.getElementById("micButton");
+    {
+        title: "Work",
 
-    const micStatus =
-        document.getElementById("micStatus");
+        part1: [
+            "What kind of work do you do?",
+            "What do you enjoy most about your work?",
+            "Is there anything you would like to change about your job?",
+            "Do you think you will continue doing this kind of work in the future?"
+        ],
 
-    const transcript =
-        document.getElementById("transcript");
+        part2: {
+            title: "Describe a job you would like to have in the future.",
+            points: [
+                "what the job would be",
+                "what qualifications or skills you would need",
+                "where you would like to do this job",
+                "and explain why you would like to have this job"
+            ]
+        },
 
-    const clearButton =
-        document.getElementById("clearButton");
+        part3: [
+            "What qualities do you think are important for people to succeed at work?",
+            "How has technology changed the way people work?",
+            "Do you think people today work harder than people did in the past?"
+        ]
+    },
 
-    const feedbackButton =
-        document.getElementById("feedbackButton");
+    {
+        title: "Hobbies",
 
-    const feedback =
-        document.getElementById("feedback");
+        part1: [
+            "What do you usually do in your free time?",
+            "Did you have any hobbies when you were a child?",
+            "How often do you spend time on your hobbies?",
+            "Do you prefer doing hobbies alone or with other people?"
+        ],
 
-    const scoreSection =
-        document.getElementById("scoreSection");
+        part2: {
+            title: "Describe a hobby you enjoy doing.",
+            points: [
+                "what the hobby is",
+                "when you started doing it",
+                "how often you do it",
+                "and explain why you enjoy it"
+            ]
+        },
 
-    const speakingScore =
-        document.getElementById("speakingScore");
+        part3: [
+            "Why do you think people need hobbies?",
+            "Are people's hobbies different from those of previous generations?",
+            "Do you think people have enough free time nowadays?"
+        ]
+    },
 
-    const grammarScore =
-        document.getElementById("grammarScore");
+    {
+        title: "Free Time",
 
-    const vocabularyScore =
-        document.getElementById("vocabularyScore");
+        part1: [
+            "What do you usually do when you have some free time?",
+            "Do you usually spend your free time alone or with other people?",
+            "What did you enjoy doing in your free time when you were younger?",
+            "Would you like to have more free time?"
+        ],
 
-    const fluencyScore =
-        document.getElementById("fluencyScore");
+        part2: {
+            title: "Describe something you enjoy doing in your free time.",
+            points: [
+                "what it is",
+                "when you usually do it",
+                "who you usually do it with",
+                "and explain why you enjoy doing it"
+            ]
+        },
 
-    const pronunciationScore =
-        document.getElementById("pronunciationScore");
+        part3: [
+            "Why do people find it difficult to relax nowadays?",
+            "How do people's leisure activities change as they get older?",
+            "Do you think technology has improved people's free time?"
+        ]
+    },
+
+    {
+        title: "Family",
+
+        part1: [
+            "How often do you spend time with your family?",
+            "What do you usually do together?",
+            "Who are you closest to in your family?",
+            "Do you think family relationships are important?"
+        ],
+
+        part2: {
+            title: "Describe a family member you are close to.",
+            points: [
+                "who the person is",
+                "how long you have known them",
+                "what you usually do together",
+                "and explain why you are close to this person"
+            ]
+        },
+
+        part3: [
+            "How has family life changed in recent years?",
+            "Why do some families spend less time together nowadays?",
+            "Do you think children should spend more time with their grandparents?"
+        ]
+    },
+
+    {
+        title: "Friends",
+
+        part1: [
+            "How often do you meet your friends?",
+            "What do you usually do when you meet your friends?",
+            "Do you have many close friends?",
+            "What qualities do you value in a friend?"
+        ],
+
+        part2: {
+            title: "Describe a friend who has had a positive influence on you.",
+            points: [
+                "who the person is",
+                "how you met",
+                "what influence this person has had on you",
+                "and explain why you value this friendship"
+            ]
+        },
+
+        part3: [
+            "Why do some friendships last for many years?",
+            "How has social media changed friendships?",
+            "Do you think it is easier to make friends now than in the past?"
+        ]
+    },
+
+    {
+        title: "Hometown",
+
+        part1: [
+            "Where is your hometown?",
+            "What do you like most about your hometown?",
+            "Has your hometown changed much in recent years?",
+            "Would you like to live there in the future?"
+        ],
+
+        part2: {
+            title: "Describe a place in your hometown that you like.",
+            points: [
+                "where it is",
+                "what the place is like",
+                "what people usually do there",
+                "and explain why you like this place"
+            ]
+        },
+
+        part3: [
+            "Why do some people prefer living in small towns?",
+            "What problems can cities face when they grow too quickly?",
+            "How can governments make cities better places to live?"
+        ]
+    },
+
+    {
+        title: "Study",
+
+        part1: [
+            "What are you studying?",
+            "What do you enjoy most about your studies?",
+            "Is there anything you find difficult about studying?",
+            "Do you prefer studying alone or with other people?"
+        ],
+
+        part2: {
+            title: "Describe a subject you enjoyed studying.",
+            points: [
+                "what the subject was",
+                "when you studied it",
+                "what you learned from it",
+                "and explain why you enjoyed studying it"
+            ]
+        },
+
+        part3: [
+            "What makes a good teacher?",
+            "How has technology changed education?",
+            "Do you think students have too much pressure nowadays?"
+        ]
+    },
+
+    {
+        title: "Food",
+
+        part1: [
+            "What kind of food do you enjoy eating?",
+            "Do you often eat meals at home?",
+            "Is there any food you dislike?",
+            "Have your food preferences changed over time?"
+        ],
+
+        part2: {
+            title: "Describe a meal you really enjoyed.",
+            points: [
+                "what the meal was",
+                "where you had it",
+                "who you had it with",
+                "and explain why you enjoyed it"
+            ]
+        },
+
+        part3: [
+            "Why are traditional foods important to a country's culture?",
+            "Why are people eating more international food nowadays?",
+            "Do you think people's diets will change in the future?"
+        ]
+    },
+
+    {
+        title: "Cooking",
+
+        part1: [
+            "Do you enjoy cooking?",
+            "How often do you cook?",
+            "Who taught you how to cook?",
+            "What kind of food do you like preparing?"
+        ],
+
+        part2: {
+            title: "Describe a dish you know how to cook.",
+            points: [
+                "what the dish is",
+                "what ingredients are needed",
+                "how you prepare it",
+                "and explain why you like this dish"
+            ]
+        },
+
+        part3: [
+            "Why should children learn how to cook?",
+            "Why do some people prefer eating out rather than cooking at home?",
+            "How might technology change cooking in the future?"
+        ]
+    },
+
+    {
+        title: "Travel",
+
+        part1: [
+            "Do you enjoy travelling?",
+            "What kind of places do you like visiting?",
+            "Do you prefer travelling alone or with other people?",
+            "How often do you travel?"
+        ],
+
+        part2: {
+            title: "Describe a memorable trip you have taken.",
+            points: [
+                "where you went",
+                "who you went with",
+                "what you did there",
+                "and explain why the trip was memorable"
+            ]
+        },
+
+        part3: [
+            "Why do people enjoy travelling?",
+            "What are the advantages and disadvantages of international tourism?",
+            "How can tourism affect local communities?"
+        ]
+    },
+
+    {
+        title: "Holidays",
+
+        part1: [
+            "What do you usually do during holidays?",
+            "What is your favourite holiday of the year?",
+            "Do you prefer short holidays or long holidays?",
+            "Did you enjoy holidays more when you were a child?"
+        ],
+
+        part2: {
+            title: "Describe a holiday you really enjoyed.",
+            points: [
+                "when it was",
+                "where you went",
+                "what you did",
+                "and explain why you enjoyed it"
+            ]
+        },
+
+        part3: [
+            "Why are holidays important for people?",
+            "How have people's holiday habits changed?",
+            "Do you think people spend too much money on holidays?"
+        ]
+    },
+
+    {
+        title: "Music",
+
+        part1: [
+            "What kind of music do you enjoy listening to?",
+            "When do you usually listen to music?",
+            "Did you learn to play a musical instrument when you were young?",
+            "Has your taste in music changed over time?"
+        ],
+
+        part2: {
+            title: "Describe a song that is important to you.",
+            points: [
+                "what the song is",
+                "when you first heard it",
+                "what the song is about",
+                "and explain why it is important to you"
+            ]
+        },
+
+        part3: [
+            "Why is music important in people's lives?",
+            "How has technology changed the way people listen to music?",
+            "Do you think traditional music will remain popular in the future?"
+        ]
+    },
+
+    {
+        title: "Movies",
+
+        part1: [
+            "Do you enjoy watching movies?",
+            "What kind of movies do you like?",
+            "How often do you watch movies?",
+            "Do you prefer watching movies at home or at the cinema?"
+        ],
+
+        part2: {
+            title: "Describe a movie that you enjoyed watching.",
+            points: [
+                "what the movie was",
+                "when you watched it",
+                "what it was about",
+                "and explain why you enjoyed it"
+            ]
+        },
+
+        part3: [
+            "Why do people enjoy watching movies?",
+            "How have movies changed people's understanding of other cultures?",
+            "Do you think cinemas will remain popular in the future?"
+        ]
+    },
+
+    {
+        title: "Books",
+
+        part1: [
+            "Do you enjoy reading books?",
+            "What kind of books do you like?",
+            "How often do you read?",
+            "Did you read much when you were a child?"
+        ],
+
+        part2: {
+            title: "Describe a book that you enjoyed reading.",
+            points: [
+                "what the book is",
+                "when you read it",
+                "what it is about",
+                "and explain why you enjoyed reading it"
+            ]
+        },
+
+        part3: [
+            "Why do some people prefer books to digital content?",
+            "How can reading benefit children?",
+            "Do you think people will read more or less in the future?"
+        ]
+    },
+
+    {
+        title: "Technology",
+
+        part1: [
+            "What piece of technology do you use most often?",
+            "What do you mainly use it for?",
+            "Is there any technology you find difficult to use?",
+            "How has technology changed your daily life?"
+        ],
+
+        part2: {
+            title: "Describe a piece of technology that is useful to you.",
+            points: [
+                "what it is",
+                "when you started using it",
+                "what you use it for",
+                "and explain why it is useful to you"
+            ]
+        },
+
+        part3: [
+            "How has technology changed the way people communicate?",
+            "What are some disadvantages of relying too much on technology?",
+            "Do you think technology will make people's lives easier in the future?"
+        ]
+    },
+
+    {
+        title: "Social Media",
+
+        part1: [
+            "Do you often use social media?",
+            "What do you usually use social media for?",
+            "Which social media platform do you use most?",
+            "Do you think you spend too much time on social media?"
+        ],
+
+        part2: {
+            title: "Describe a social media post that you remember well.",
+            points: [
+                "what the post was about",
+                "where you saw it",
+                "why you remember it",
+                "and explain how it made you feel"
+            ]
+        },
+
+        part3: [
+            "How has social media changed the way people communicate?",
+            "Why do some people share a lot of personal information online?",
+            "Do you think social media has a positive or negative effect on society?"
+        ]
+    },
+
+    {
+        title: "Shopping",
+
+        part1: [
+            "Do you enjoy shopping?",
+            "What kind of things do you usually buy?",
+            "Do you prefer shopping online or in stores?",
+            "Have your shopping habits changed in recent years?"
+        ],
+
+        part2: {
+            title: "Describe something you bought that was very useful.",
+            points: [
+                "what it was",
+                "where you bought it",
+                "why you bought it",
+                "and explain why it was useful"
+            ]
+        },
+
+        part3: [
+            "Why has online shopping become so popular?",
+            "What are the disadvantages of buying things online?",
+            "Do you think people buy more things than they really need?"
+        ]
+    },
+
+    {
+        title: "Health",
+
+        part1: [
+            "What do you do to stay healthy?",
+            "Do you do any exercise regularly?",
+            "Is healthy food important to you?",
+            "Do you think you have a healthy lifestyle?"
+        ],
+
+        part2: {
+            title: "Describe something you do to keep healthy.",
+            points: [
+                "what you do",
+                "when you started doing it",
+                "how often you do it",
+                "and explain why you think it is beneficial"
+            ]
+        },
+
+        part3: [
+            "Why do some people find it difficult to maintain a healthy lifestyle?",
+            "What can governments do to encourage people to be healthier?",
+            "Do you think people are more health-conscious than in the past?"
+        ]
+    },
+
+    {
+        title: "Environment",
+
+        part1: [
+            "Is environmental protection important to you?",
+            "What environmental problems are common in your area?",
+            "Do you do anything to protect the environment?",
+            "Were you taught about environmental problems at school?"
+        ],
+
+        part2: {
+            title: "Describe an environmental problem in your area.",
+            points: [
+                "what the problem is",
+                "what causes it",
+                "how it affects people",
+                "and explain what you think should be done about it"
+            ]
+        },
+
+        part3: [
+            "What are the biggest environmental problems facing the world today?",
+            "Who should be mainly responsible for protecting the environment?",
+            "Do you think individuals can make a significant difference?"
+        ]
+    },
+
+    {
+        title: "Daily Routine",
+
+        part1: [
+            "What is your daily routine like?",
+            "What part of your daily routine do you enjoy most?",
+            "Is your daily routine different at weekends?",
+            "Would you like to change anything about your daily routine?"
+        ],
+
+        part2: {
+            title: "Describe a typical day in your life.",
+            points: [
+                "what you usually do in the morning",
+                "what you do during the day",
+                "what you usually do in the evening",
+                "and explain which part of the day you enjoy most"
+            ]
+        },
+
+        part3: [
+            "Why do some people prefer having a fixed routine?",
+            "How can people's routines change when they start working?",
+            "Do you think modern life makes it harder for people to have a balanced routine?"
+        ]
+    }
+
+];
 
 
-    /* ==================================================
-       SPEECH RECOGNITION
-    ================================================== */
+let currentPart = "part1";
+let currentTopicIndex = 0;
+let currentQuestionIndex = 0;
+
+let recognition = null;
+let isRecording = false;
+let finalTranscript = "";
+
+let currentAnswerSubmitted = false;
+
+let practiceHistory = [];
+
+
+const partSelect = document.getElementById("partSelect");
+const topicSelect = document.getElementById("topicSelect");
+
+const partLabel = document.getElementById("partLabel");
+const questionNumber = document.getElementById("questionNumber");
+const questionText = document.getElementById("questionText");
+const questionHint = document.getElementById("questionHint");
+
+const cueCard = document.getElementById("cueCard");
+const cueTitle = document.getElementById("cueTitle");
+const cuePoints = document.getElementById("cuePoints");
+
+const micButton = document.getElementById("micButton");
+const recordStatus = document.getElementById("recordStatus");
+
+const transcript = document.getElementById("transcript");
+
+const scoreArea = document.getElementById("scoreArea");
+const scoreValue = document.getElementById("scoreValue");
+
+const feedback = document.getElementById("feedback");
+
+const nextButton = document.getElementById("nextButton");
+const tryAgainButton = document.getElementById("tryAgainButton");
+
+const historyList = document.getElementById("historyList");
+const clearHistoryButton = document.getElementById("clearHistoryButton");
+
+
+function populateTopics() {
+
+    topicSelect.innerHTML = "";
+
+    topics.forEach((topic, index) => {
+
+        const option = document.createElement("option");
+
+        option.value = index;
+        option.textContent = topic.title;
+
+        topicSelect.appendChild(option);
+
+    });
+
+}
+
+
+function getCurrentQuestion() {
+
+    const topic = topics[currentTopicIndex];
+
+    if (currentPart === "part1") {
+        return topic.part1[currentQuestionIndex];
+    }
+
+    if (currentPart === "part2") {
+        return topic.part2.title;
+    }
+
+    return topic.part3[currentQuestionIndex];
+
+}
+
+
+function getQuestionCount() {
+
+    const topic = topics[currentTopicIndex];
+
+    if (currentPart === "part1") {
+        return topic.part1.length;
+    }
+
+    if (currentPart === "part2") {
+        return 1;
+    }
+
+    return topic.part3.length;
+
+}
+
+
+function updateQuestion() {
+
+    const topic = topics[currentTopicIndex];
+
+    partLabel.textContent =
+        currentPart.replace("part", "PART ");
+
+    questionNumber.textContent =
+        `Question ${currentQuestionIndex + 1} of ${getQuestionCount()}`;
+
+    questionText.textContent =
+        getCurrentQuestion();
+
+
+    if (currentPart === "part1") {
+
+        questionHint.textContent =
+            "Answer naturally. Try to give a clear answer with a reason or example when appropriate.";
+
+        cueCard.style.display = "none";
+
+    }
+
+
+    if (currentPart === "part2") {
+
+        questionHint.textContent =
+            "Speak continuously and develop your ideas using the points below.";
+
+        cueCard.style.display = "block";
+
+        cueTitle.textContent =
+            "You should say:";
+
+        cuePoints.innerHTML = "";
+
+        topic.part2.points.forEach(point => {
+
+            const li = document.createElement("li");
+
+            li.textContent = point;
+
+            cuePoints.appendChild(li);
+
+        });
+
+    }
+
+
+    if (currentPart === "part3") {
+
+        questionHint.textContent =
+            "Give a developed answer. Explain your ideas and support them with reasons or examples.";
+
+        cueCard.style.display = "none";
+
+    }
+
+
+    resetAnswer();
+
+}
+
+
+function resetAnswer() {
+
+    stopRecording(false);
+
+    finalTranscript = "";
+
+    currentAnswerSubmitted = false;
+
+    transcript.textContent =
+        "Your transcript will appear here...";
+
+    feedback.textContent =
+        "Your AI feedback will appear here after you finish your answer.";
+
+    scoreArea.style.display = "none";
+
+    scoreValue.textContent = "-";
+
+    recordStatus.textContent =
+        "Click the microphone and start speaking.";
+
+    nextButton.disabled = false;
+
+}
+
+
+function initSpeechRecognition() {
 
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-    let recognition = null;
-
-    let isRecording = false;
-
-
-    /*
-     * Lưu từng result theo index.
-     *
-     * Web Speech API có thể cập nhật lại
-     * cùng một result nhiều lần.
-     *
-     * Vì vậy KHÔNG append text mỗi lần onresult.
-     *
-     * Ta thay thế result cũ bằng result mới.
-     */
-
-    let finalResults = {};
-
-    let interimResults = {};
-
-
-    /* ==================================================
-       NORMALIZE
-    ================================================== */
-
-    function normalizeText(text) {
-
-        return String(text || "")
-            .replace(/\s+/g, " ")
-            .trim();
-
-    }
-
-
-    /* ==================================================
-       ESCAPE HTML
-    ================================================== */
-
-    function escapeHTML(text) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent =
-            text;
-
-        return div.innerHTML;
-
-    }
-
-
-    /* ==================================================
-       FINAL TRANSCRIPT
-    ================================================== */
-
-    function getFinalTranscript() {
-
-        return Object.keys(finalResults)
-            .sort(
-                (a, b) =>
-                    Number(a) - Number(b)
-            )
-            .map(
-                key =>
-                    finalResults[key]
-            )
-            .filter(Boolean)
-            .join(" ")
-            .replace(/\s+/g, " ")
-            .trim();
-
-    }
-
-
-    /* ==================================================
-       INTERIM TRANSCRIPT
-    ================================================== */
-
-    function getInterimTranscript() {
-
-        return Object.keys(interimResults)
-            .sort(
-                (a, b) =>
-                    Number(a) - Number(b)
-            )
-            .map(
-                key =>
-                    interimResults[key]
-            )
-            .filter(Boolean)
-            .join(" ")
-            .replace(/\s+/g, " ")
-            .trim();
-
-    }
-
-
-    /* ==================================================
-       RENDER TRANSCRIPT
-    ================================================== */
-
-    function renderTranscript() {
-
-        const finalText =
-            getFinalTranscript();
-
-        const interimText =
-            getInterimTranscript();
-
-
-        if (
-            !finalText &&
-            !interimText
-        ) {
-
-            transcript.innerHTML = `
-                <span class="placeholder">
-                    Your speech will appear here...
-                </span>
-            `;
-
-            return;
-        }
-
-
-        transcript.innerHTML = `
-
-            <span class="user-text">
-                ${escapeHTML(finalText)}
-            </span>
-
-            ${
-                interimText
-                    ? `
-                        <span class="interim">
-                            ${escapeHTML(
-                                " " + interimText
-                            )}
-                        </span>
-                    `
-                    : ""
-            }
-
-        `;
-
-    }
-
-
-    /* ==================================================
-       CREATE SPEECH RECOGNITION
-    ================================================== */
 
     if (!SpeechRecognition) {
 
-        micStatus.textContent =
-            "Trình duyệt không hỗ trợ nhận diện giọng nói.";
+        recordStatus.textContent =
+            "Speech recognition is not supported in this browser.";
 
         micButton.disabled = true;
 
-    } else {
-
-        recognition =
-            new SpeechRecognition();
-
-
-        recognition.lang =
-            "en-US";
-
-
-        recognition.continuous =
-            true;
-
-
-        recognition.interimResults =
-            true;
-
-
-        recognition.maxAlternatives =
-            1;
-
-
-        /* ==================================================
-           ON RESULT
-        ================================================== */
-
-        recognition.onresult =
-            function(event) {
-
-                /*
-                 * Chỉ cập nhật các result mà
-                 * trình duyệt vừa thay đổi.
-                 */
-
-                for (
-                    let i = event.resultIndex;
-                    i < event.results.length;
-                    i++
-                ) {
-
-                    const result =
-                        event.results[i];
-
-
-                    const text =
-                        normalizeText(
-                            result[0].transcript
-                        );
-
-
-                    if (!text) {
-                        continue;
-                    }
-
-
-                    if (result.isFinal) {
-
-                        /*
-                         * FINAL:
-                         * thay thế result cũ,
-                         * tuyệt đối không append.
-                         */
-
-                        finalResults[i] =
-                            text;
-
-
-                        delete interimResults[i];
-
-                    } else {
-
-                        /*
-                         * INTERIM:
-                         * cũng thay thế result cũ.
-                         */
-
-                        interimResults[i] =
-                            text;
-
-                    }
-
-                }
-
-
-                renderTranscript();
-
-            };
-
-
-        /* ==================================================
-           ON START
-        ================================================== */
-
-        recognition.onstart =
-            function() {
-
-                isRecording =
-                    true;
-
-
-                micButton.classList.add(
-                    "recording"
-                );
-
-
-                micStatus.textContent =
-                    "Đang nghe... hãy nói bằng tiếng Anh";
-
-            };
-
-
-        /* ==================================================
-           ON END
-        ================================================== */
-
-        recognition.onend =
-            function() {
-
-                isRecording =
-                    false;
-
-
-                micButton.classList.remove(
-                    "recording"
-                );
-
-
-                micStatus.textContent =
-                    "Đã dừng. Nhấn micro để nói tiếp.";
-
-            };
-
-
-        /* ==================================================
-           ON ERROR
-        ================================================== */
-
-        recognition.onerror =
-            function(event) {
-
-                console.error(
-                    "Speech recognition error:",
-                    event.error
-                );
-
-
-                isRecording =
-                    false;
-
-
-                micButton.classList.remove(
-                    "recording"
-                );
-
-
-                if (
-                    event.error ===
-                    "not-allowed"
-                ) {
-
-                    micStatus.textContent =
-                        "Hãy cho phép trình duyệt sử dụng micro.";
-
-                } else if (
-                    event.error ===
-                    "no-speech"
-                ) {
-
-                    micStatus.textContent =
-                        "Không nghe thấy giọng nói.";
-
-                } else {
-
-                    micStatus.textContent =
-                        "Có lỗi với micro. Hãy thử lại.";
-
-                }
-
-            };
-
-
-        /* ==================================================
-           MICROPHONE BUTTON
-        ================================================== */
-
-        micButton.addEventListener(
-            "click",
-            function() {
-
-                if (!isRecording) {
-
-                    try {
-
-                        recognition.start();
-
-                    } catch (error) {
-
-                        console.log(
-                            "Recognition already started."
-                        );
-
-                    }
-
-                } else {
-
-                    recognition.stop();
-
-                }
-
-            }
-        );
+        return;
 
     }
 
 
-    /* ==================================================
-       CLEAR
-    ================================================== */
+    recognition =
+        new SpeechRecognition();
 
-    clearButton.addEventListener(
-        "click",
-        function() {
+    recognition.lang = "en-US";
 
-            /*
-             * Xóa toàn bộ kết quả speech.
-             */
+    recognition.continuous = true;
 
-            finalResults = {};
+    recognition.interimResults = true;
 
-            interimResults = {};
 
+    recognition.onstart = () => {
 
-            if (
-                recognition &&
-                isRecording
-            ) {
+        isRecording = true;
 
-                recognition.stop();
+        micButton.classList.add("recording");
 
-            }
+        micButton.textContent = "⏹️";
 
+        recordStatus.textContent =
+            "Listening... speak naturally.";
 
-            renderTranscript();
+    };
 
 
-            feedback.innerHTML = `
+    recognition.onresult = event => {
 
-                <div class="feedback-placeholder">
+        let interimTranscript = "";
 
-                    Sau khi bạn hoàn thành câu trả lời,
-                    hãy nhấn
 
-                    <strong>
-                        Get AI Feedback
-                    </strong>
+        for (
+            let i = event.resultIndex;
+            i < event.results.length;
+            i++
+        ) {
 
-                    để AI phân tích bài nói.
-
-                </div>
-
-            `;
-
-
-            scoreSection.style.display =
-                "none";
-
-
-            speakingScore.innerHTML =
-                '- <span>/ 10</span>';
-
-
-            grammarScore.textContent =
-                "-";
-
-            vocabularyScore.textContent =
-                "-";
-
-            fluencyScore.textContent =
-                "-";
-
-            pronunciationScore.textContent =
-                "-";
-
-        }
-    );
-
-
-    /* ==================================================
-       SCORE PARSER
-    ================================================== */
-
-    function extractScore(
-        text,
-        category
-    ) {
-
-        /*
-         * Escape tên category để dùng an toàn
-         * trong RegExp.
-         */
-
-        const escapedCategory =
-            category.replace(
-                /[.*+?^${}()|[\]\\]/g,
-                "\\$&"
-            );
-
-
-        /*
-         * Chỉ chấp nhận:
-         *
-         * 6/10
-         * 6.5/10
-         * 7/10
-         * 7.5/10
-         * ...
-         * 9.5/10
-         * 10/10
-         *
-         * KHÔNG chấp nhận:
-         *
-         * 6.2
-         * 7.1
-         * 8.7
-         */
-
-        const regex =
-            new RegExp(
-                escapedCategory +
-                "\\s*:\\s*" +
-                "(10(?:\\.0)?|[1-9](?:\\.5)?)" +
-                "\\s*\\/\\s*10",
-                "i"
-            );
-
-
-        const match =
-            text.match(regex);
-
-
-        return match
-            ? match[1]
-            : null;
-
-    }
-
-
-    /* ==================================================
-       UPDATE SCORES
-    ================================================== */
-
-    function updateScores(text) {
-
-        const grammar =
-            extractScore(
-                text,
-                "Grammar"
-            );
-
-
-        const vocabulary =
-            extractScore(
-                text,
-                "Vocabulary"
-            );
-
-
-        const fluency =
-            extractScore(
-                text,
-                "Fluency"
-            );
-
-
-        const pronunciation =
-            extractScore(
-                text,
-                "Pronunciation"
-            );
-
-
-        const overall =
-            extractScore(
-                text,
-                "Overall Score"
-            );
-
-
-        /*
-         * Hiện Speaking Score.
-         */
-
-        scoreSection.style.display =
-            "block";
-
-
-        if (grammar) {
-
-            grammarScore.textContent =
-                grammar;
-
-        }
-
-
-        if (vocabulary) {
-
-            vocabularyScore.textContent =
-                vocabulary;
-
-        }
-
-
-        if (fluency) {
-
-            fluencyScore.textContent =
-                fluency;
-
-        }
-
-
-        if (pronunciation) {
-
-            pronunciationScore.textContent =
-                pronunciation;
-
-        }
-
-
-        if (overall) {
-
-            speakingScore.innerHTML =
-                `${overall} <span>/ 10</span>`;
-
-        }
-
-    }
-
-
-    /* ==================================================
-       FORMAT FEEDBACK
-    ================================================== */
-
-    function formatFeedback(text) {
-
-        let html =
-            escapeHTML(text);
-
-
-        const headings = [
-
-            "Grammar:",
-            "Vocabulary:",
-            "Fluency:",
-            "Pronunciation:",
-            "Overall Score:",
-            "Corrected Answer:",
-            "Key Corrections:",
-            "Improvement Tips:",
-            "Useful Phrases:",
-            "Final Coach Comment:"
-
-        ];
-
-
-        headings.forEach(
-            function(heading) {
-
-                const escaped =
-                    heading.replace(
-                        /[.*+?^${}()|[\]\\]/g,
-                        "\\$&"
-                    );
-
-
-                html =
-                    html.replace(
-                        new RegExp(
-                            "^(" +
-                            escaped +
-                            ".*)$",
-                            "gim"
-                        ),
-                        "<h3>$1</h3>"
-                    );
-
-            }
-        );
-
-
-        html =
-            html.replace(
-                /\n/g,
-                "<br>"
-            );
-
-
-        return html;
-
-    }
-
-
-    /* ==================================================
-       AI FEEDBACK
-    ================================================== */
-
-    feedbackButton.addEventListener(
-        "click",
-        async function() {
-
-            /*
-             * Chỉ lấy FINAL transcript.
-             *
-             * Không gửi interim cho AI.
-             */
+            const result = event.results[i];
 
             const text =
-                normalizeText(
-                    getFinalTranscript()
-                );
+                result[0].transcript;
 
 
-            if (!text) {
+            if (result.isFinal) {
 
-                alert(
-                    "Hãy nói một câu trả lời trước nhé."
-                );
+                finalTranscript +=
+                    text + " ";
 
-                return;
+            } else {
+
+                interimTranscript += text;
 
             }
 
-
-            feedbackButton.disabled =
-                true;
+        }
 
 
-            feedbackButton.textContent =
-                "⏳ AI đang phân tích...";
+        const combined =
+            finalTranscript + interimTranscript;
 
 
-            feedback.innerHTML = `
+        transcript.textContent =
+            combined.trim() ||
+            "Listening...";
 
-                <div class="feedback-placeholder">
-
-                    AI đang phân tích bài nói của bạn...
-
-                </div>
-
-            `;
+    };
 
 
-            scoreSection.style.display =
-                "none";
+    recognition.onerror = event => {
 
+        console.error(
+            "Speech recognition error:",
+            event.error
+        );
+
+
+        if (event.error === "not-allowed") {
+
+            isRecording = false;
+
+            micButton.classList.remove("recording");
+
+            micButton.textContent = "🎙️";
+
+            recordStatus.textContent =
+                "Microphone permission was denied.";
+
+            return;
+
+        }
+
+
+        recordStatus.textContent =
+            "Speech recognition error. Try again.";
+
+    };
+
+
+    recognition.onend = () => {
+
+        if (isRecording) {
 
             try {
 
-                const response =
-                    await fetch(
-                        "/api/feedback",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-                                    transcript: text
-                                })
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    !response.ok ||
-                    !data.success
-                ) {
-
-                    throw new Error(
-                        data.error ||
-                        "Không thể nhận feedback."
-                    );
-
-                }
-
-
-                /*
-                 * Hiển thị AI feedback.
-                 */
-
-                feedback.innerHTML =
-                    formatFeedback(
-                        data.feedback
-                    );
-
-
-                /*
-                 * Hiển thị Speaking Score
-                 * và 4 tiêu chí.
-                 */
-
-                updateScores(
-                    data.feedback
-                );
-
+                recognition.start();
 
             } catch (error) {
 
-                console.error(
-                    error
-                );
-
-
-                feedback.innerHTML = `
-
-                    <div class="feedback-placeholder">
-
-                        ❌ Không thể lấy feedback từ AI.
-
-                        <br>
-                        <br>
-
-                        ${escapeHTML(
-                            error.message
-                        )}
-
-                    </div>
-
-                `;
-
-            } finally {
-
-                feedbackButton.disabled =
-                    false;
-
-
-                feedbackButton.textContent =
-                    "✨ Get AI Feedback";
+                console.error(error);
 
             }
 
+        } else {
+
+            micButton.classList.remove("recording");
+
+            micButton.textContent = "🎙️";
+
         }
+
+    };
+
+}
+
+
+function startRecording() {
+
+    if (!recognition) {
+        return;
+    }
+
+
+    finalTranscript = "";
+
+    currentAnswerSubmitted = false;
+
+
+    transcript.textContent =
+        "Listening...";
+
+
+    feedback.textContent =
+        "Your AI feedback will appear here after you finish your answer.";
+
+
+    scoreArea.style.display = "none";
+
+    scoreValue.textContent = "-";
+
+
+    recordStatus.textContent =
+        "Starting microphone...";
+
+
+    try {
+
+        recognition.start();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+function stopRecording(submit = true) {
+
+    if (!recognition) {
+        return;
+    }
+
+
+    const wasRecording =
+        isRecording;
+
+
+    isRecording = false;
+
+
+    try {
+
+        recognition.stop();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+
+    micButton.classList.remove("recording");
+
+    micButton.textContent = "🎙️";
+
+
+    if (wasRecording) {
+
+        recordStatus.textContent =
+            "Recording stopped.";
+
+    }
+
+
+    if (
+        submit &&
+        wasRecording
+    ) {
+
+        setTimeout(() => {
+
+            submitForFeedback();
+
+        }, 250);
+
+    }
+
+}
+
+
+async function submitForFeedback() {
+
+    const text =
+        finalTranscript.trim();
+
+
+    if (!text) {
+
+        feedback.textContent =
+            "Please record an answer before requesting feedback.";
+
+        return null;
+
+    }
+
+
+    if (currentAnswerSubmitted) {
+        return null;
+    }
+
+
+    currentAnswerSubmitted = true;
+
+
+    feedback.innerHTML = `
+        <div class="loading">
+            <span>AI is analysing your answer</span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    `;
+
+
+    nextButton.disabled = true;
+
+
+    try {
+
+        const response =
+            await fetch("/api/feedback", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    transcript: text,
+
+                    part: currentPart,
+
+                    topic:
+                        topics[currentTopicIndex].title,
+
+                    question:
+                        getCurrentQuestion()
+
+                })
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.error ||
+                "Unable to get AI feedback."
+            );
+
+        }
+
+
+        displayFeedback(
+            data.feedback
+        );
+
+
+        recordStatus.textContent =
+            "AI feedback is ready.";
+
+
+        return data.feedback;
+
+    } catch (error) {
+
+        console.error(error);
+
+        currentAnswerSubmitted = false;
+
+        feedback.textContent =
+            "Unable to connect to the AI. Please check that server.js is running.";
+
+        return null;
+
+    } finally {
+
+        nextButton.disabled = false;
+
+    }
+
+}
+
+
+function extractOverallScore(feedback) {
+
+    if (
+        !feedback ||
+        typeof feedback !== "string"
+    ) {
+        return null;
+    }
+
+
+    const patterns = [
+
+        /Overall\s+Score\s*:\s*\*{0,2}\s*(10(?:\.0|\.5)?|[1-9](?:\.0|\.5)?)\s*\*{0,2}\s*\/\s*10/i,
+
+        /Overall\s+Speaking\s+Score\s*:\s*\*{0,2}\s*(10(?:\.0|\.5)?|[1-9](?:\.0|\.5)?)\s*\*{0,2}\s*\/\s*10/i,
+
+        /Overall\s+Score[^\d]{0,30}(10(?:\.0|\.5)?|[1-9](?:\.0|\.5)?)\s*\/\s*10/i,
+
+        /Overall\s+Speaking\s+Score[^\d]{0,30}(10(?:\.0|\.5)?|[1-9](?:\.0|\.5)?)\s*\/\s*10/i
+
+    ];
+
+
+    let score = null;
+
+
+    for (const pattern of patterns) {
+
+        const match =
+            feedback.match(pattern);
+
+
+        if (match) {
+
+            score =
+                parseFloat(match[1]);
+
+            break;
+
+        }
+
+    }
+
+
+    if (
+        score === null ||
+        Number.isNaN(score)
+    ) {
+
+        return null;
+
+    }
+
+
+    score =
+        Math.round(score * 2) / 2;
+
+
+    if (score < 1) {
+        score = 1;
+    }
+
+
+    if (score > 10) {
+        score = 10;
+    }
+
+
+    return score;
+
+}
+
+
+function displayFeedback(feedbackText) {
+
+    feedback.textContent =
+        feedbackText;
+
+
+    const score =
+        extractOverallScore(feedbackText);
+
+
+    scoreArea.style.display =
+        "block";
+
+
+    if (score !== null) {
+
+        scoreValue.textContent =
+            `${score}/10`;
+
+    } else {
+
+        scoreValue.textContent =
+            "-";
+
+    }
+
+
+    saveToHistory(
+
+        finalTranscript.trim(),
+
+        feedbackText,
+
+        score
+
     );
+
+}
+
+
+function saveToHistory(
+    answer,
+    feedbackText,
+    score
+) {
+
+    practiceHistory.push({
+
+        part:
+            currentPart,
+
+        topic:
+            topics[currentTopicIndex].title,
+
+        question:
+            getCurrentQuestion(),
+
+        transcript:
+            answer,
+
+        feedback:
+            feedbackText,
+
+        score:
+            score
+
+    });
+
+
+    renderHistory();
+
+}
+
+
+function renderHistory() {
+
+    if (!practiceHistory.length) {
+
+        historyList.innerHTML = `
+            <div class="history-empty">
+                No completed questions yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    historyList.innerHTML = "";
+
+
+    [...practiceHistory]
+        .reverse()
+        .forEach(item => {
+
+            const wrapper =
+                document.createElement("div");
+
+            wrapper.className =
+                "history-item";
+
+
+            const meta =
+                document.createElement("div");
+
+            meta.className =
+                "history-meta";
+
+
+            const question =
+                document.createElement("div");
+
+            question.className =
+                "history-question";
+
+            question.textContent =
+                `${item.part.replace("part", "Part ")} · ${item.topic}`;
+
+
+            const score =
+                document.createElement("div");
+
+            score.className =
+                "history-score";
+
+            score.textContent =
+                item.score !== null
+                    ? `${item.score}/10`
+                    : "-";
+
+
+            meta.appendChild(question);
+
+            meta.appendChild(score);
+
+
+            const questionTextElement =
+                document.createElement("div");
+
+            questionTextElement.style.marginTop =
+                "7px";
+
+            questionTextElement.style.color =
+                "#566176";
+
+            questionTextElement.style.fontSize =
+                "14px";
+
+            questionTextElement.textContent =
+                item.question;
+
+
+            const answer =
+                document.createElement("div");
+
+            answer.className =
+                "history-transcript";
+
+            answer.textContent =
+                `Your answer: ${item.transcript}`;
+
+
+            const feedbackElement =
+                document.createElement("div");
+
+            feedbackElement.className =
+                "history-feedback";
+
+            feedbackElement.textContent =
+                item.feedback;
+
+
+            wrapper.appendChild(meta);
+
+            wrapper.appendChild(questionTextElement);
+
+            wrapper.appendChild(answer);
+
+            wrapper.appendChild(feedbackElement);
+
+
+            historyList.appendChild(wrapper);
+
+        });
+
+}
+
+
+partSelect.addEventListener(
+    "change",
+    () => {
+
+        currentPart =
+            partSelect.value;
+
+        currentQuestionIndex =
+            0;
+
+        updateQuestion();
+
+    }
+);
+
+
+topicSelect.addEventListener(
+    "change",
+    () => {
+
+        currentTopicIndex =
+            Number(topicSelect.value);
+
+        currentQuestionIndex =
+            0;
+
+        updateQuestion();
+
+    }
+);
+
+
+micButton.addEventListener(
+    "click",
+    () => {
+
+        if (isRecording) {
+
+            stopRecording(true);
+
+            return;
+
+        }
+
+
+        startRecording();
+
+    }
+);
+
+
+tryAgainButton.addEventListener(
+    "click",
+    () => {
+
+        resetAnswer();
+
+    }
+);
+
+
+nextButton.addEventListener(
+    "click",
+    () => {
+
+        if (!currentAnswerSubmitted) {
+
+            feedback.textContent =
+                "Please finish your answer and wait for the AI feedback before moving to the next question.";
+
+            return;
+
+        }
+
+
+        const count =
+            getQuestionCount();
+
+
+        if (
+            currentQuestionIndex <
+            count - 1
+        ) {
+
+            currentQuestionIndex++;
+
+            updateQuestion();
+
+            return;
+
+        }
+
+
+        currentQuestionIndex = 0;
+
+        updateQuestion();
+
+    }
+);
+
+
+clearHistoryButton.addEventListener(
+    "click",
+    () => {
+
+        practiceHistory = [];
+
+        renderHistory();
+
+    }
+);
+
+
+populateTopics();
+
+topicSelect.value = "0";
+
+initSpeechRecognition();
+
+updateQuestion();
+
+renderHistory();
 
 </script>
 
