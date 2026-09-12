@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Speaking Coach</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <div class="logo-icon">🎙️</div>
+                <span>Speaking Coach</span>
+            </div>
+
+            <nav>
+                <a class="active">🏠 <span>Practice</span></a>
+                <a>📊 <span>Progress</span></a>
+                <a>📚 <span>Vocabulary</span></a>
+                <a>⚙️ <span>Settings</span></a>
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="streak">
+                    <span>🔥</span>
+
+                    <div>
+                        <strong>7 days</strong>
+                        <small>Speaking streak</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main -->
+        <main class="main">
+
+            <!-- Header -->
+            <header class="topbar">
+
+                <div>
+
+                    <p class="welcome">
+                        Good morning 👋
+                    </p>
+
+                    <h1>
+                        Let's practice speaking.
+                    </h1>
+
+                </div>
+
+
+                <div class="level">
+
+                    <span>
+                        English Level
+                    </span>
+
+                    <strong>
+                        B1 Intermediate
+                    </strong>
+
+                </div>
+
+            </header>
+
+
+            <!-- Topic -->
+            <section class="topic-card">
+
+                <div class="topic-info">
+
+                    <span class="tag">
+                        TODAY'S TOPIC
+                    </span>
+
+                    <h2>
+                        Talk about your daily routine
+                    </h2>
+
+                    <p>
+                        Tell me about what you usually do during a normal day.
+                        Try to speak for at least 30 seconds.
+                    </p>
+
+                    <div class="tips">
+
+                        <span>
+                            💡 Try to speak naturally
+                        </span>
+
+                        <span>
+                            ⏱️ 30–60 seconds
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="topic-icon">
+                    💬
+                </div>
+
+            </section>
+
+
+            <!-- Speaking -->
+            <section class="speaking-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Your answer
+                        </h3>
+
+                        <p>
+                            Press the microphone and start speaking.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="status"
+                        id="status"
+                    >
+                        Ready
+                    </div>
+
+                </div>
+
+
+                <!-- Transcript -->
+                <div
+                    class="transcript"
+                    id="transcript"
+                >
+
+                    <span class="placeholder">
+                        Your speech will appear here...
+                    </span>
+
+                </div>
+
+
+                <!-- Microphone -->
+                <div class="record-area">
+
+                    <button
+                        class="mic-button"
+                        id="micButton"
+                    >
+                        <span>
+                            🎙️
+                        </span>
+                    </button>
+
+
+                    <p id="micText">
+                        Click to start speaking
+                    </p>
+
+
+                    <small>
+                        Your browser may ask for microphone permission.
+                    </small>
+
+                </div>
+
+            </section>
+
+
+            <!-- Feedback -->
+            <section class="feedback-grid">
+
+
+                <!-- Score -->
+                <div class="feedback-card">
+
+                    <div class="feedback-title">
+
+                        <span>
+                            🎯
+                        </span>
+
+                        <h3>
+                            Speaking Score
+                        </h3>
+
+                    </div>
+
+
+                    <div class="score">
+
+                        <strong id="score">
+                            --
+                        </strong>
+
+                        <span>
+                            / 10
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div id="progress"></div>
+
+                    </div>
+
+
+                    <p id="scoreText">
+                        Complete a speaking exercise to receive your score.
+                    </p>
+
+                </div>
+
+
+                <!-- AI Feedback -->
+                <div class="feedback-card">
+
+                    <div class="feedback-title">
+
+                        <span>
+                            🤖
+                        </span>
+
+                        <h3>
+                            AI Feedback
+                        </h3>
+
+                    </div>
+
+
+                    <div
+                        class="feedback-content"
+                        id="feedback"
+                    >
+
+                        <p>
+                            <strong>
+                                Grammar
+                            </strong>
+
+                            Your feedback will appear here.
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Vocabulary
+                            </strong>
+
+                            Speak first and I'll give you suggestions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+<script>
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const micButton =
+    document.getElementById("micButton");
+
+const transcript =
+    document.getElementById("transcript");
+
+const micText =
+    document.getElementById("micText");
+
+const status =
+    document.getElementById("status");
+
+const score =
+    document.getElementById("score");
+
+const progress =
+    document.getElementById("progress");
+
+const scoreText =
+    document.getElementById("scoreText");
+
+const feedback =
+    document.getElementById("feedback");
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let recognition;
+
+let isRecording = false;
+
+let finalTranscript = "";
+
+
+/* =========================
+   SPEECH RECOGNITION
+========================= */
+
+if (
+    "webkitSpeechRecognition" in window ||
+    "SpeechRecognition" in window
+) {
+
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        "en-US";
+
+
+    recognition.continuous =
+        true;
+
+
+    recognition.interimResults =
+        true;
+
+
+    /* =========================
+       START RECORDING
+    ========================= */
+
+    recognition.onstart =
+        function () {
+
+            isRecording = true;
+
+
+            micButton.classList.add(
+                "recording"
+            );
+
+
+            micText.textContent =
+                "Listening... speak now";
+
+
+            status.textContent =
+                "Recording";
+
+        };
+
+
+    /* =========================
+       SPEECH RESULT
+    ========================= */
+
+    recognition.onresult =
+        function (event) {
+
+
+            let interimText = "";
+
+
+            for (
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ) {
+
+
+                const text =
+                    event.results[i][0].transcript;
+
+
+                if (
+                    event.results[i].isFinal
+                ) {
+
+                    finalTranscript +=
+                        text + " ";
+
+                } else {
+
+                    interimText +=
+                        text;
+
+                }
+
+            }
+
+
+            transcript.innerHTML = `
+
+                <span class="user-text">
+                    ${finalTranscript}
+                </span>
+
+                <span class="interim">
+                    ${interimText}
+                </span>
+
+            `;
+
+        };
+
+
+    /* =========================
+       STOP RECORDING
+    ========================= */
+
+    recognition.onend =
+        function () {
+
+
+            isRecording = false;
+
+
+            micButton.classList.remove(
+                "recording"
+            );
+
+
+            micText.textContent =
+                "Click to speak again";
+
+
+            status.textContent =
+                "Completed";
+
+
+            generateFeedback();
+
+        };
+
+
+    /* =========================
+       SPEECH ERROR
+    ========================= */
+
+    recognition.onerror =
+        function (event) {
+
+
+            console.error(
+                "Speech recognition error:",
+                event.error
+            );
+
+
+            isRecording = false;
+
+
+            micButton.classList.remove(
+                "recording"
+            );
+
+
+            status.textContent =
+                "Error";
+
+
+            micText.textContent =
+                "Try speaking again";
+
+        };
+
+
+    /* =========================
+       MICROPHONE BUTTON
+    ========================= */
+
+    micButton.addEventListener(
+        "click",
+        function () {
+
+
+            if (isRecording) {
+
+
+                recognition.stop();
+
+
+            } else {
+
+
+                finalTranscript = "";
+
+
+                transcript.innerHTML = `
+
+                    <span class="placeholder">
+                        Listening...
+                    </span>
+
+                `;
+
+
+                recognition.start();
+
+            }
+
+        }
+    );
+
+
+} else {
+
+
+    micText.textContent =
+        "Speech recognition is not supported in this browser.";
+
+
+    micButton.disabled =
+        true;
+
+}
+
+
+
+/* =========================
+   AI FEEDBACK
+========================= */
+
+async function generateFeedback() {
+
+
+    const text =
+        finalTranscript.trim();
+
+
+    if (!text) {
+
+        return;
+
+    }
+
+
+    /* =========================
+       AI ANALYZING
+    ========================= */
+
+    status.textContent =
+        "AI is analyzing...";
+
+
+    scoreText.textContent =
+        "AI đang phân tích câu trả lời của bạn...";
+
+
+    feedback.innerHTML = `
+
+        <p>
+            🤖 Đang phân tích câu trả lời...
+        </p>
+
+    `;
+
+
+    try {
+
+
+        /* =========================
+           SEND TO BACKEND
+        ========================= */
+
+        const response =
+            await fetch(
+                "/api/feedback",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        transcript: text
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        /* =========================
+           CHECK ERROR
+        ========================= */
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "AI request failed"
+            );
+
+        }
+
+
+        /* =========================
+           DISPLAY FEEDBACK
+        ========================= */
+
+        status.textContent =
+            "AI Feedback Ready";
+
+
+        feedback.innerHTML = `
+
+            <p
+                style="
+                    white-space: pre-line;
+                    line-height: 1.7;
+                "
+            >
+                ${data.feedback}
+            </p>
+
+        `;
+
+
+        /* =========================
+           GET ONLY OVERALL SCORE
+        ========================= */
+
+        const overallMatch =
+            data.feedback.match(
+                /Overall\s*Score\s*:\s*(10(?:\.0)?|[1-9](?:\.[05])?)\s*\/\s*10/i
+            );
+
+
+        /* =========================
+           DISPLAY SCORE
+        ========================= */
+
+        if (overallMatch) {
+
+
+            const aiScore =
+                Math.min(
+                    10,
+                    parseFloat(
+                        overallMatch[1]
+                    )
+                );
+
+
+            score.textContent =
+                aiScore;
+
+
+            /*
+                Convert 1–10
+                into percentage
+                for progress bar
+            */
+
+            progress.style.width =
+                (
+                    aiScore / 10 * 100
+                ) + "%";
+
+
+            scoreText.textContent =
+                "Điểm được AI đánh giá dựa trên câu trả lời của bạn.";
+
+
+        } else {
+
+
+            score.textContent =
+                "--";
+
+
+            progress.style.width =
+                "0%";
+
+
+            scoreText.textContent =
+                "AI đã hoàn thành phần nhận xét.";
+
+        }
+
+
+    } catch (error) {
+
+
+        console.error(
+            "AI Error:",
+            error
+        );
+
+
+        status.textContent =
+            "AI Error";
+
+
+        feedback.innerHTML = `
+
+            <p>
+                ❌ Không thể kết nối với AI.
+                Hãy kiểm tra server trong Terminal.
+            </p>
+
+        `;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
