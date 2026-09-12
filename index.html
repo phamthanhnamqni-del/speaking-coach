@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>IELTS Speaking Coach</title>
 
     <style>
@@ -250,40 +249,12 @@
             white-space: pre-wrap;
         }
 
-        .feedback {
-            padding: 19px;
-            border-radius: 15px;
-            background: #f8faff;
-            border: 1px solid #e1e8ff;
-            color: #34405a;
-            line-height: 1.7;
-            white-space: pre-wrap;
-        }
-
-        .score-area {
-            display: none;
-            margin-top: 22px;
-            text-align: center;
-        }
-
-        .score-label {
-            color: var(--muted);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .score-value {
-            margin-top: 4px;
-            font-size: 42px;
-            font-weight: 850;
-            color: var(--primary);
-        }
-
+        /* NEXT QUESTION IS NOW HIGHER */
         .actions {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
-            margin-top: 24px;
+            margin-top: 18px;
             flex-wrap: wrap;
         }
 
@@ -317,6 +288,35 @@
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        .score-area {
+            display: none;
+            margin-top: 28px;
+            text-align: center;
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .score-value {
+            margin-top: 4px;
+            font-size: 42px;
+            font-weight: 850;
+            color: var(--primary);
+        }
+
+        .feedback {
+            padding: 19px;
+            border-radius: 15px;
+            background: #f8faff;
+            border: 1px solid #e1e8ff;
+            color: #34405a;
+            line-height: 1.7;
+            white-space: pre-wrap;
         }
 
         .history {
@@ -476,7 +476,6 @@
             </select>
         </div>
 
-
         <div class="control-group">
             <label for="topicSelect">Topic</label>
 
@@ -556,6 +555,27 @@
         </div>
 
 
+        <!-- MOVED HERE:
+             NEXT QUESTION APPEARS DIRECTLY AFTER YOUR ANSWER -->
+        <div class="actions">
+
+            <button
+                class="btn btn-secondary"
+                id="tryAgainButton"
+            >
+                Try Again
+            </button>
+
+            <button
+                class="btn btn-primary"
+                id="nextButton"
+            >
+                Next Question →
+            </button>
+
+        </div>
+
+
         <div
             class="score-area"
             id="scoreArea"
@@ -590,25 +610,6 @@
 
         </div>
 
-
-        <div class="actions">
-
-            <button
-                class="btn btn-secondary"
-                id="tryAgainButton"
-            >
-                Try Again
-            </button>
-
-            <button
-                class="btn btn-primary"
-                id="nextButton"
-            >
-                Next Question →
-            </button>
-
-        </div>
-
     </main>
 
 
@@ -630,9 +631,11 @@
         </div>
 
         <div id="historyList">
+
             <div class="history-empty">
                 No completed questions yet.
             </div>
+
         </div>
 
     </section>
@@ -656,6 +659,7 @@ const topics = [
 
         part2: {
             title: "Describe a job you would like to have in the future.",
+
             points: [
                 "what the job would be",
                 "what qualifications or skills you would need",
@@ -671,6 +675,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Hobbies",
 
@@ -683,6 +688,7 @@ const topics = [
 
         part2: {
             title: "Describe a hobby you enjoy doing.",
+
             points: [
                 "what the hobby is",
                 "when you started doing it",
@@ -698,6 +704,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Free Time",
 
@@ -710,6 +717,7 @@ const topics = [
 
         part2: {
             title: "Describe something you enjoy doing in your free time.",
+
             points: [
                 "what it is",
                 "when you usually do it",
@@ -725,6 +733,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Family",
 
@@ -737,6 +746,7 @@ const topics = [
 
         part2: {
             title: "Describe a family member you are close to.",
+
             points: [
                 "who the person is",
                 "how long you have known them",
@@ -752,6 +762,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Friends",
 
@@ -764,6 +775,7 @@ const topics = [
 
         part2: {
             title: "Describe a friend who has had a positive influence on you.",
+
             points: [
                 "who the person is",
                 "how you met",
@@ -779,6 +791,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Hometown",
 
@@ -791,6 +804,7 @@ const topics = [
 
         part2: {
             title: "Describe a place in your hometown that you like.",
+
             points: [
                 "where it is",
                 "what the place is like",
@@ -806,6 +820,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Study",
 
@@ -818,6 +833,7 @@ const topics = [
 
         part2: {
             title: "Describe a subject you enjoyed studying.",
+
             points: [
                 "what the subject was",
                 "when you studied it",
@@ -833,6 +849,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Food",
 
@@ -845,6 +862,7 @@ const topics = [
 
         part2: {
             title: "Describe a meal you really enjoyed.",
+
             points: [
                 "what the meal was",
                 "where you had it",
@@ -860,6 +878,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Cooking",
 
@@ -872,6 +891,7 @@ const topics = [
 
         part2: {
             title: "Describe a dish you know how to cook.",
+
             points: [
                 "what the dish is",
                 "what ingredients are needed",
@@ -887,6 +907,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Travel",
 
@@ -899,6 +920,7 @@ const topics = [
 
         part2: {
             title: "Describe a memorable trip you have taken.",
+
             points: [
                 "where you went",
                 "who you went with",
@@ -914,6 +936,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Holidays",
 
@@ -926,6 +949,7 @@ const topics = [
 
         part2: {
             title: "Describe a holiday you really enjoyed.",
+
             points: [
                 "when it was",
                 "where you went",
@@ -941,6 +965,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Music",
 
@@ -953,6 +978,7 @@ const topics = [
 
         part2: {
             title: "Describe a song that is important to you.",
+
             points: [
                 "what the song is",
                 "when you first heard it",
@@ -968,6 +994,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Movies",
 
@@ -980,6 +1007,7 @@ const topics = [
 
         part2: {
             title: "Describe a movie that you enjoyed watching.",
+
             points: [
                 "what the movie was",
                 "when you watched it",
@@ -995,6 +1023,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Books",
 
@@ -1007,6 +1036,7 @@ const topics = [
 
         part2: {
             title: "Describe a book that you enjoyed reading.",
+
             points: [
                 "what the book is",
                 "when you read it",
@@ -1022,6 +1052,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Technology",
 
@@ -1034,6 +1065,7 @@ const topics = [
 
         part2: {
             title: "Describe a piece of technology that is useful to you.",
+
             points: [
                 "what it is",
                 "when you started using it",
@@ -1049,6 +1081,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Social Media",
 
@@ -1061,6 +1094,7 @@ const topics = [
 
         part2: {
             title: "Describe a social media post that you remember well.",
+
             points: [
                 "what the post was about",
                 "where you saw it",
@@ -1076,6 +1110,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Shopping",
 
@@ -1088,6 +1123,7 @@ const topics = [
 
         part2: {
             title: "Describe something you bought that was very useful.",
+
             points: [
                 "what it was",
                 "where you bought it",
@@ -1103,6 +1139,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Health",
 
@@ -1115,6 +1152,7 @@ const topics = [
 
         part2: {
             title: "Describe something you do to keep healthy.",
+
             points: [
                 "what you do",
                 "when you started doing it",
@@ -1130,6 +1168,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Environment",
 
@@ -1142,6 +1181,7 @@ const topics = [
 
         part2: {
             title: "Describe an environmental problem in your area.",
+
             points: [
                 "what the problem is",
                 "what causes it",
@@ -1157,6 +1197,7 @@ const topics = [
         ]
     },
 
+
     {
         title: "Daily Routine",
 
@@ -1169,6 +1210,7 @@ const topics = [
 
         part2: {
             title: "Describe a typical day in your life.",
+
             points: [
                 "what you usually do in the morning",
                 "what you do during the day",
@@ -1200,33 +1242,62 @@ let currentAnswerSubmitted = false;
 let practiceHistory = [];
 
 
-const partSelect = document.getElementById("partSelect");
-const topicSelect = document.getElementById("topicSelect");
+const partSelect =
+    document.getElementById("partSelect");
 
-const partLabel = document.getElementById("partLabel");
-const questionNumber = document.getElementById("questionNumber");
-const questionText = document.getElementById("questionText");
-const questionHint = document.getElementById("questionHint");
+const topicSelect =
+    document.getElementById("topicSelect");
 
-const cueCard = document.getElementById("cueCard");
-const cueTitle = document.getElementById("cueTitle");
-const cuePoints = document.getElementById("cuePoints");
+const partLabel =
+    document.getElementById("partLabel");
 
-const micButton = document.getElementById("micButton");
-const recordStatus = document.getElementById("recordStatus");
+const questionNumber =
+    document.getElementById("questionNumber");
 
-const transcript = document.getElementById("transcript");
+const questionText =
+    document.getElementById("questionText");
 
-const scoreArea = document.getElementById("scoreArea");
-const scoreValue = document.getElementById("scoreValue");
+const questionHint =
+    document.getElementById("questionHint");
 
-const feedback = document.getElementById("feedback");
+const cueCard =
+    document.getElementById("cueCard");
 
-const nextButton = document.getElementById("nextButton");
-const tryAgainButton = document.getElementById("tryAgainButton");
+const cueTitle =
+    document.getElementById("cueTitle");
 
-const historyList = document.getElementById("historyList");
-const clearHistoryButton = document.getElementById("clearHistoryButton");
+const cuePoints =
+    document.getElementById("cuePoints");
+
+const micButton =
+    document.getElementById("micButton");
+
+const recordStatus =
+    document.getElementById("recordStatus");
+
+const transcript =
+    document.getElementById("transcript");
+
+const scoreArea =
+    document.getElementById("scoreArea");
+
+const scoreValue =
+    document.getElementById("scoreValue");
+
+const feedback =
+    document.getElementById("feedback");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+const tryAgainButton =
+    document.getElementById("tryAgainButton");
+
+const historyList =
+    document.getElementById("historyList");
+
+const clearHistoryButton =
+    document.getElementById("clearHistoryButton");
 
 
 function populateTopics() {
@@ -1235,21 +1306,23 @@ function populateTopics() {
 
     topics.forEach((topic, index) => {
 
-        const option = document.createElement("option");
+        const option =
+            document.createElement("option");
 
         option.value = index;
-        option.textContent = topic.title;
+
+        option.textContent =
+            topic.title;
 
         topicSelect.appendChild(option);
-
     });
-
 }
 
 
 function getCurrentQuestion() {
 
-    const topic = topics[currentTopicIndex];
+    const topic =
+        topics[currentTopicIndex];
 
     if (currentPart === "part1") {
         return topic.part1[currentQuestionIndex];
@@ -1260,13 +1333,13 @@ function getCurrentQuestion() {
     }
 
     return topic.part3[currentQuestionIndex];
-
 }
 
 
 function getQuestionCount() {
 
-    const topic = topics[currentTopicIndex];
+    const topic =
+        topics[currentTopicIndex];
 
     if (currentPart === "part1") {
         return topic.part1.length;
@@ -1277,13 +1350,13 @@ function getQuestionCount() {
     }
 
     return topic.part3.length;
-
 }
 
 
 function updateQuestion() {
 
-    const topic = topics[currentTopicIndex];
+    const topic =
+        topics[currentTopicIndex];
 
     partLabel.textContent =
         currentPart.replace("part", "PART ");
@@ -1300,8 +1373,8 @@ function updateQuestion() {
         questionHint.textContent =
             "Answer naturally. Try to give a clear answer with a reason or example when appropriate.";
 
-        cueCard.style.display = "none";
-
+        cueCard.style.display =
+            "none";
     }
 
 
@@ -1310,7 +1383,8 @@ function updateQuestion() {
         questionHint.textContent =
             "Speak continuously and develop your ideas using the points below.";
 
-        cueCard.style.display = "block";
+        cueCard.style.display =
+            "block";
 
         cueTitle.textContent =
             "You should say:";
@@ -1319,14 +1393,14 @@ function updateQuestion() {
 
         topic.part2.points.forEach(point => {
 
-            const li = document.createElement("li");
+            const li =
+                document.createElement("li");
 
-            li.textContent = point;
+            li.textContent =
+                point;
 
             cuePoints.appendChild(li);
-
         });
-
     }
 
 
@@ -1335,13 +1409,12 @@ function updateQuestion() {
         questionHint.textContent =
             "Give a developed answer. Explain your ideas and support them with reasons or examples.";
 
-        cueCard.style.display = "none";
-
+        cueCard.style.display =
+            "none";
     }
 
 
     resetAnswer();
-
 }
 
 
@@ -1359,15 +1432,17 @@ function resetAnswer() {
     feedback.textContent =
         "Your AI feedback will appear here after you finish your answer.";
 
-    scoreArea.style.display = "none";
+    scoreArea.style.display =
+        "none";
 
-    scoreValue.textContent = "-";
+    scoreValue.textContent =
+        "-";
 
     recordStatus.textContent =
         "Click the microphone and start speaking.";
 
-    nextButton.disabled = false;
-
+    nextButton.disabled =
+        false;
 }
 
 
@@ -1383,34 +1458,40 @@ function initSpeechRecognition() {
         recordStatus.textContent =
             "Speech recognition is not supported in this browser.";
 
-        micButton.disabled = true;
+        micButton.disabled =
+            true;
 
         return;
-
     }
 
 
     recognition =
         new SpeechRecognition();
 
-    recognition.lang = "en-US";
+    recognition.lang =
+        "en-US";
 
-    recognition.continuous = true;
+    recognition.continuous =
+        true;
 
-    recognition.interimResults = true;
+    recognition.interimResults =
+        true;
 
 
     recognition.onstart = () => {
 
-        isRecording = true;
+        isRecording =
+            true;
 
-        micButton.classList.add("recording");
+        micButton.classList.add(
+            "recording"
+        );
 
-        micButton.textContent = "⏹️";
+        micButton.textContent =
+            "⏹️";
 
         recordStatus.textContent =
             "Listening... speak naturally.";
-
     };
 
 
@@ -1425,7 +1506,8 @@ function initSpeechRecognition() {
             i++
         ) {
 
-            const result = event.results[i];
+            const result =
+                event.results[i];
 
             const text =
                 result[0].transcript;
@@ -1438,21 +1520,20 @@ function initSpeechRecognition() {
 
             } else {
 
-                interimTranscript += text;
-
+                interimTranscript +=
+                    text;
             }
-
         }
 
 
         const combined =
-            finalTranscript + interimTranscript;
+            finalTranscript +
+            interimTranscript;
 
 
         transcript.textContent =
             combined.trim() ||
             "Listening...";
-
     };
 
 
@@ -1466,23 +1547,25 @@ function initSpeechRecognition() {
 
         if (event.error === "not-allowed") {
 
-            isRecording = false;
+            isRecording =
+                false;
 
-            micButton.classList.remove("recording");
+            micButton.classList.remove(
+                "recording"
+            );
 
-            micButton.textContent = "🎙️";
+            micButton.textContent =
+                "🎙️";
 
             recordStatus.textContent =
                 "Microphone permission was denied.";
 
             return;
-
         }
 
 
         recordStatus.textContent =
             "Speech recognition error. Try again.";
-
     };
 
 
@@ -1497,19 +1580,18 @@ function initSpeechRecognition() {
             } catch (error) {
 
                 console.error(error);
-
             }
 
         } else {
 
-            micButton.classList.remove("recording");
+            micButton.classList.remove(
+                "recording"
+            );
 
-            micButton.textContent = "🎙️";
-
+            micButton.textContent =
+                "🎙️";
         }
-
     };
-
 }
 
 
@@ -1522,7 +1604,8 @@ function startRecording() {
 
     finalTranscript = "";
 
-    currentAnswerSubmitted = false;
+    currentAnswerSubmitted =
+        false;
 
 
     transcript.textContent =
@@ -1533,9 +1616,11 @@ function startRecording() {
         "Your AI feedback will appear here after you finish your answer.";
 
 
-    scoreArea.style.display = "none";
+    scoreArea.style.display =
+        "none";
 
-    scoreValue.textContent = "-";
+    scoreValue.textContent =
+        "-";
 
 
     recordStatus.textContent =
@@ -1549,9 +1634,7 @@ function startRecording() {
     } catch (error) {
 
         console.error(error);
-
     }
-
 }
 
 
@@ -1566,7 +1649,8 @@ function stopRecording(submit = true) {
         isRecording;
 
 
-    isRecording = false;
+    isRecording =
+        false;
 
 
     try {
@@ -1576,20 +1660,21 @@ function stopRecording(submit = true) {
     } catch (error) {
 
         console.error(error);
-
     }
 
 
-    micButton.classList.remove("recording");
+    micButton.classList.remove(
+        "recording"
+    );
 
-    micButton.textContent = "🎙️";
+    micButton.textContent =
+        "🎙️";
 
 
     if (wasRecording) {
 
         recordStatus.textContent =
             "Recording stopped.";
-
     }
 
 
@@ -1603,9 +1688,7 @@ function stopRecording(submit = true) {
             submitForFeedback();
 
         }, 250);
-
     }
-
 }
 
 
@@ -1621,7 +1704,6 @@ async function submitForFeedback() {
             "Please record an answer before requesting feedback.";
 
         return null;
-
     }
 
 
@@ -1630,7 +1712,8 @@ async function submitForFeedback() {
     }
 
 
-    currentAnswerSubmitted = true;
+    currentAnswerSubmitted =
+        true;
 
 
     feedback.innerHTML = `
@@ -1643,48 +1726,54 @@ async function submitForFeedback() {
     `;
 
 
-    nextButton.disabled = true;
+    nextButton.disabled =
+        true;
 
 
     try {
 
         const response =
-            await fetch("/api/feedback", {
+            await fetch(
+                "/api/feedback",
+                {
+                    method: "POST",
 
-                method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    body: JSON.stringify({
 
-                body: JSON.stringify({
+                        transcript:
+                            text,
 
-                    transcript: text,
+                        part:
+                            currentPart,
 
-                    part: currentPart,
+                        topic:
+                            topics[currentTopicIndex].title,
 
-                    topic:
-                        topics[currentTopicIndex].title,
-
-                    question:
-                        getCurrentQuestion()
-
-                })
-
-            });
+                        question:
+                            getCurrentQuestion()
+                    })
+                }
+            );
 
 
         const data =
             await response.json();
 
 
-        if (!response.ok || !data.success) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
             throw new Error(
                 data.error ||
                 "Unable to get AI feedback."
             );
-
         }
 
 
@@ -1699,23 +1788,25 @@ async function submitForFeedback() {
 
         return data.feedback;
 
+
     } catch (error) {
 
         console.error(error);
 
-        currentAnswerSubmitted = false;
+        currentAnswerSubmitted =
+            false;
 
         feedback.textContent =
             "Unable to connect to the AI. Please check that server.js is running.";
 
         return null;
 
+
     } finally {
 
-        nextButton.disabled = false;
-
+        nextButton.disabled =
+            false;
     }
-
 }
 
 
@@ -1738,14 +1829,15 @@ function extractOverallScore(feedback) {
         /Overall\s+Score[^\d]{0,30}(10(?:\.0|\.5)?|[1-9](?:\.0|\.5)?)\s*\/\s*10/i,
 
         /Overall\s+Speaking\s+Score[^\d]{0,30}(10(?:\.0|\.5)?|[1-9](?:\.0|\.5)?)\s*\/\s*10/i
-
     ];
 
 
     let score = null;
 
 
-    for (const pattern of patterns) {
+    for (
+        const pattern of patterns
+    ) {
 
         const match =
             feedback.match(pattern);
@@ -1757,9 +1849,7 @@ function extractOverallScore(feedback) {
                 parseFloat(match[1]);
 
             break;
-
         }
-
     }
 
 
@@ -1767,9 +1857,7 @@ function extractOverallScore(feedback) {
         score === null ||
         Number.isNaN(score)
     ) {
-
         return null;
-
     }
 
 
@@ -1788,18 +1876,21 @@ function extractOverallScore(feedback) {
 
 
     return score;
-
 }
 
 
-function displayFeedback(feedbackText) {
+function displayFeedback(
+    feedbackText
+) {
 
     feedback.textContent =
         feedbackText;
 
 
     const score =
-        extractOverallScore(feedbackText);
+        extractOverallScore(
+            feedbackText
+        );
 
 
     scoreArea.style.display =
@@ -1815,20 +1906,14 @@ function displayFeedback(feedbackText) {
 
         scoreValue.textContent =
             "-";
-
     }
 
 
     saveToHistory(
-
         finalTranscript.trim(),
-
         feedbackText,
-
         score
-
     );
-
 }
 
 
@@ -1857,12 +1942,10 @@ function saveToHistory(
 
         score:
             score
-
     });
 
 
     renderHistory();
-
 }
 
 
@@ -1877,11 +1960,11 @@ function renderHistory() {
         `;
 
         return;
-
     }
 
 
-    historyList.innerHTML = "";
+    historyList.innerHTML =
+        "";
 
 
     [...practiceHistory]
@@ -1889,31 +1972,42 @@ function renderHistory() {
         .forEach(item => {
 
             const wrapper =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             wrapper.className =
                 "history-item";
 
 
             const meta =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             meta.className =
                 "history-meta";
 
 
             const question =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             question.className =
                 "history-question";
 
             question.textContent =
-                `${item.part.replace("part", "Part ")} · ${item.topic}`;
+                `${item.part.replace(
+                    "part",
+                    "Part "
+                )} · ${item.topic}`;
 
 
             const score =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             score.className =
                 "history-score";
@@ -1924,13 +2018,19 @@ function renderHistory() {
                     : "-";
 
 
-            meta.appendChild(question);
+            meta.appendChild(
+                question
+            );
 
-            meta.appendChild(score);
+            meta.appendChild(
+                score
+            );
 
 
             const questionTextElement =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             questionTextElement.style.marginTop =
                 "7px";
@@ -1946,7 +2046,9 @@ function renderHistory() {
 
 
             const answer =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             answer.className =
                 "history-transcript";
@@ -1956,7 +2058,9 @@ function renderHistory() {
 
 
             const feedbackElement =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             feedbackElement.className =
                 "history-feedback";
@@ -1965,19 +2069,27 @@ function renderHistory() {
                 item.feedback;
 
 
-            wrapper.appendChild(meta);
+            wrapper.appendChild(
+                meta
+            );
 
-            wrapper.appendChild(questionTextElement);
+            wrapper.appendChild(
+                questionTextElement
+            );
 
-            wrapper.appendChild(answer);
+            wrapper.appendChild(
+                answer
+            );
 
-            wrapper.appendChild(feedbackElement);
+            wrapper.appendChild(
+                feedbackElement
+            );
 
 
-            historyList.appendChild(wrapper);
-
+            historyList.appendChild(
+                wrapper
+            );
         });
-
 }
 
 
@@ -1992,7 +2104,6 @@ partSelect.addEventListener(
             0;
 
         updateQuestion();
-
     }
 );
 
@@ -2002,13 +2113,14 @@ topicSelect.addEventListener(
     () => {
 
         currentTopicIndex =
-            Number(topicSelect.value);
+            Number(
+                topicSelect.value
+            );
 
         currentQuestionIndex =
             0;
 
         updateQuestion();
-
     }
 );
 
@@ -2022,12 +2134,10 @@ micButton.addEventListener(
             stopRecording(true);
 
             return;
-
         }
 
 
         startRecording();
-
     }
 );
 
@@ -2037,7 +2147,6 @@ tryAgainButton.addEventListener(
     () => {
 
         resetAnswer();
-
     }
 );
 
@@ -2052,7 +2161,6 @@ nextButton.addEventListener(
                 "Please finish your answer and wait for the AI feedback before moving to the next question.";
 
             return;
-
         }
 
 
@@ -2070,14 +2178,13 @@ nextButton.addEventListener(
             updateQuestion();
 
             return;
-
         }
 
 
-        currentQuestionIndex = 0;
+        currentQuestionIndex =
+            0;
 
         updateQuestion();
-
     }
 );
 
@@ -2089,14 +2196,14 @@ clearHistoryButton.addEventListener(
         practiceHistory = [];
 
         renderHistory();
-
     }
 );
 
 
 populateTopics();
 
-topicSelect.value = "0";
+topicSelect.value =
+    "0";
 
 initSpeechRecognition();
 
